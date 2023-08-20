@@ -1,6 +1,6 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.20)
 
-project(Context_Switching_Emulator, LANGUAGES C CXX)
+project(, LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED 20)
@@ -8,10 +8,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED 20)
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/CMake/Files)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/CMake/build)
 
+file(GLOB SOURCES "${CMAKE_SOURCE_DIR}/src/*.cpp")
+
 add_executable(Context_Switching_Emulator 
     main.cpp
+    ${SOURCES}
 )
 
 target_include_directories(Context_Switching_Emulator PRIVATE
-    src
+    ${CMAKE_SOURCE_DIR}/include/
 )
