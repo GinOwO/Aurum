@@ -40,3 +40,4 @@ Make*
 .github
 .vscode
 .hidden
+*.code-workspace
