@@ -1,7 +1,8 @@
 #include<iostream>
+#include "scheduler.h"
 
-int main(int argc, char const *argv[])
-{
-    std::cout << "Hello World!\n";
+int main(int argc, char const *argv[]){
+    Scheduler a{1,10};
+    a.load("./test.txt");
     return 0;
 }

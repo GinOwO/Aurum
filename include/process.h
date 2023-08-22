@@ -1,37 +1,27 @@
-#include <string>
-#include <vector>
-#include <cstdint>
+#include<queue>
+#include<utility>
+#include<string>
+#include<vector>
 
 #ifndef _SCHV_PROCESS_H
 #define _SCHV_PROCESS_H 1
 
 class Process{
-private:
-    std::vector<std::string>* content;
-    size_t ptr;
+    int ptr;
     int pid;
+    std::string name;
+    std::vector<std::pair<int,int>> instructions;
 
+    // arrivalTime, burstTime, waitingTime, turnaroundTime, responseTime
+    std::vector<int> times;
 public:
-    Process(int);
-    ~Process();
-    Process* fork(const Process*);
-    static Process* load(const std::string&);
-    
-    std::string next();
-    std::string get(const size_t &);
+    static int timeToTick;
+    static int cyclesToTick;
 
-    size_t tell();
-    void seek(const int &, const int &);
-    void setPID(const int&);
-    int getPID();
+    Process(int,std::string, const std::vector<int>&);
+    void push(const std::pair<int,int>&);
+    std::pair<int,int> next();
 
-};
-
-// TODO
-
-class ProcessBlock{
-private:
-    Process* pid;
 };
 
 #endif

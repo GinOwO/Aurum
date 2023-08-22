@@ -1,69 +1,34 @@
 #include "process.h"
-
 #include "ctexceptions.h"
 
+#include<utility>
 #include<string>
 #include<vector>
-#include<cstdint>
-#include<fstream>
 
-Process::Process(int _pid=0){
-    this->content = new std::vector<std::string>;
-    this->ptr = 0;
+int Process::timeToTick = 0;
+int Process::cyclesToTick = 0;
+
+Process::Process(int _pid, std::string _name, 
+        const std::vector<int>& _times){
+    this->ptr=0;
+    this->pid=_pid;
+    this->name=_name;
+    this->times=_times;
 }
 
-Process::~Process(){
-    delete this->content;
+void Process::push(const std::pair<int,int>& instr){
+    int ttt = Process::timeToTick;
+    int ctt = Process::cyclesToTick;
+    int q=instr.second;
+    if(ttt<1) ttt=1;
+    if(ctt<1) ctt=1;
+    if(instr.first==1) q /= ctt;
+    else if(instr.first>1) q/= ttt;
+    instructions.push_back({instr.first, q});
 }
 
-Process* Process::fork(const Process* _process){
-    Process* forkedProcess = new Process;
-    forkedProcess->content = new std::vector<std::string>(*(_process->content));
-    forkedProcess->ptr = _process->ptr;
-    return forkedProcess;
-}
-
-Process* Process::load(const std::string& path){
-    Process* _process = new Process;
-    std::ifstream fd; 
-    std::string s;
-    fd.open(path);
-    while(!fd.eof()){
-        std::getline(fd, s,'\n');
-        _process->content->push_back(s);
-    }
-    return _process;
-}
-
-std::string Process::get(const size_t&n){
-    if(n>=this->content->size()) throw OutOfBoundsException();
-    return (n<content->size())?content->at(n):"";
-}
-
-std::string Process::next(){
-    return this->get(ptr++);
-}
-
-void Process::seek(const int& offset,const int& anchor=0){
-    int idx;
-    switch(anchor){
-        case 0: idx=offset; break;
-        case 1: idx=this->ptr+offset; break;
-        case 2: idx=this->content->size()-offset; break;
-        default: return;
-    }
-    if(idx<0 || idx>=this->content->size()) throw OutOfBoundsException();
-    this->ptr=idx;
-}
-
-size_t Process::tell(){
-    return this->ptr;
-}
-
-void Process::setPID(const int& _pid){
-    this->pid = _pid;
-}
-
-int Process::getPID(){
-    return this->pid;
+std::pair<int,int> Process::next(){
+    // TODO MAKE EXP
+    if(ptr>instructions.size()) throw OutOfBoundsException();
+    return this->instructions[ptr++];
 }

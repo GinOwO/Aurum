@@ -29,4 +29,9 @@ public:
     InvalidInputException();    
 };
 
+class FileException: virtual public BaseException{
+public:
+    FileException(std::string);
+};
+
 #endif

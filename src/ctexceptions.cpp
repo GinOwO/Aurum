@@ -2,6 +2,7 @@
 
 #include<exception>
 #include<string>
+#include<cctype>
 
 BaseException::BaseException(const std::string& _err_msg, const int _err_num){
     errorMessage=_err_msg;
@@ -23,3 +24,6 @@ OutOfBoundsException::OutOfBoundsException(
 
 InvalidInputException::InvalidInputException(
     ):BaseException("InvalidInputException Raised", 20) {}
+
+FileException::FileException(std::string _pname
+    ):BaseException("FileException Raised due to "+_pname, 30) {}
