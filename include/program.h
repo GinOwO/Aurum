@@ -1,5 +1,5 @@
-#ifndef _SCHV_PROGRAM_H
-#define _SCHV_PROGRAM_H 1
+#ifndef _AURUM_PROGRAM_H
+#define _AURUM_PROGRAM_H 1
 
 #include <string>
 #include <vector>
@@ -13,14 +13,16 @@ private:
     
     size_t ptr;
     int startTime;
+    int priority;
 
 public:
-    Program(int, const std::string);
+    Program(int=0, const std::string="", int=5);
     ~Program();
     Program* clone(const Program*);
     void load(int, int);
 
     int getStartTime();
+    int getPriority();
     std::string getName();    
     std::pair<int, int> next();
     std::pair<int, int> get(const size_t &);

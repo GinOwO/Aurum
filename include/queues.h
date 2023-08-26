@@ -1,43 +1,32 @@
-#ifndef _SCHV_QUEUE_H
-#define _SCHV_QUEUE_H 1
+#ifndef _AURUM_QUEUES_H
+#define _AURUM_QUEUES_H 1
 
 #include "process.h"
 
 #include<vector>
 #include<queue>
 
-class JobQueue{
-    std::queue<Process> jobQueue;
-public:
-    JobQueue();
-    void push(Process);
-    Process pop();
-    bool empty();
+/*
+bool (*processArrivalCmp)(Process*, Process*) = [](Process* a, Process* b){
+    return a->getArrivalTime()<b->getArrivalTime();
 };
-
+bool (*processPriorityCmp)(Process*, Process*) = [](Process* a, Process* b){
+    return a->getPriority()<b->getPriority() ||
+    (a->getPriority()==b->getPriority()&&a->getArrivalTime()<b->getArrivalTime());
+};
+*/
 class Queue{
-protected:
-    bool (*comparator)(Process, Process);
-    bool finalized=false;
-
-    std::vector<Process> readyQueue;
+    std::vector<int> queue;
 public:
-    Queue(bool (*)(Process, Process));
-    void push(Process);
-    Process pop();
+    Queue();
+    ~Queue();
+    void push(int);
+    int pop();
+    int front();
+    int size();
     bool empty();
-    void finalize();
-    std::vector<Process> getQueue() const;
-};
-
-class ReadyQueue: public Queue{
-public:
-    ReadyQueue(bool (*)(Process, Process));
-};
-
-class WaitingQueue: public Queue{
-public:
-    WaitingQueue(bool (*)(Process, Process));
+    void clear();
+    std::vector<int> getQueue() const;
 };
 
 #endif

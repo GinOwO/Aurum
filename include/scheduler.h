@@ -1,9 +1,11 @@
-#ifndef _SCHV_QUEUE_H
-#define _SCHV_QUEUE_H 1
+#ifndef _AURUM_QUEUE_H
+#define _AURUM_QUEUE_H 1
 
-#include "program.h"
 #include "ctexceptions.h"
+#include "program.h"
 #include "process.h"
+#include "ptable.h"
+#include "queues.h"
 
 #include<vector>
 #include<string>
@@ -16,8 +18,11 @@ class Scheduler{
     int wastedCycles;
     int cyclesPerTick;
     int timeUnitsPerTick;
-    std::queue<Process> arrivalQueue;
+    Queue arrivalQueue;
+    ProcessTable processTable;
 public:
+    static int pid;
+
     Scheduler(const int&,const int&);
     void load(const std::string&);
     void reset();

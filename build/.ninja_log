@@ -1,0 +1,12 @@
+# ninja log v5
+3028	3175	1693063501498993445	/home/gin/Desktop/Aurum/CMake/build/Aurum	4bcf970103f69f1a
+1	22	1693064692885695758	build.ninja	90716828576a854f
+1	507	1693064565314282464	CMakeFiles/Aurum.dir/main.cpp.o	71589f90c430efc9
+2	767	1693063499092986325	CMakeFiles/Aurum.dir/src/queues.cpp.o	e4d7e846c76aae6b
+2	3027	1693063501344992989	CMakeFiles/Aurum.dir/src/scheduler.cpp.o	87bd8ebd24f8d042
+1	628	1693063498953985914	CMakeFiles/Aurum.dir/src/process.cpp.o	c22db02a2737c7e8
+1	609	1693063498932985852	CMakeFiles/Aurum.dir/src/program.cpp.o	f57e672555d9a67b
+1	417	1693063498742985289	CMakeFiles/Aurum.dir/src/ctexceptions.cpp.o	b956b91464258ba5
+1	19	1693064564825280880	CMakeFiles/Aurum.dir/src/algorithms/sjt/ljt.cpp.o	c1d05a956fe511c3
+1	817	1693063499142986473	CMakeFiles/Aurum.dir/src/ptable.cpp.o	f7632b4ec23284e8
+0	5	0	clean	eee472499eb9f57e

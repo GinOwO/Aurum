@@ -30,3 +30,12 @@ FileException::FileException(std::string _pname
 
 EndOfFileException::EndOfFileException(
     ):BaseException("EndOfFileException Raised", 35) {}
+
+QueueFinalizedException::QueueFinalizedException(
+    ):BaseException("QueueFinalizedException Raised", 40) {}
+
+QueueNotFinalizedException::QueueNotFinalizedException(
+    ):BaseException("QueueNotFinalizedException Raised", 45) {}
+
+ProcessDoesNotExistException::ProcessDoesNotExistException(
+    ):BaseException("ProcessDoesNotExistException Raised", 50) {}

@@ -1,5 +1,5 @@
-#ifndef _SCHV_CUSTOM_EXCEPTIONS_H
-#define _SCHV_CUSTOM_EXCEPTIONS_H 1
+#ifndef _AURUM_CUSTOM_EXCEPTIONS_H
+#define _AURUM_CUSTOM_EXCEPTIONS_H 1
 
 #include<exception>
 #include<string>
@@ -38,5 +38,21 @@ class FileException: virtual public BaseException{
 public:
     FileException(std::string);
 };
+
+class QueueFinalizedException: virtual public BaseException{
+public:
+    QueueFinalizedException();    
+};
+
+class QueueNotFinalizedException: virtual public BaseException{
+public:
+    QueueNotFinalizedException();    
+};
+
+class ProcessDoesNotExistException: virtual public BaseException{
+public:
+    ProcessDoesNotExistException();    
+};
+
 
 #endif

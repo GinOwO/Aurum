@@ -1,7 +1,10 @@
 #include "scheduler.h"
-#include "program.h"
+
 #include "ctexceptions.h"
+#include "program.h"
 #include "process.h"
+#include "queues.h"
+#include "ptable.h"
 
 #include<regex>
 #include<cctype>
@@ -9,13 +12,13 @@
 #include<string>
 #include<fstream>
 
-std::regex patStart(R"/(^STR_PROCESS\s\"([\w\s]+)\"\s(\d+)$)/");
+std::regex patStart(R"/(^STR_PROCESS\s\"([\w\s]+)\"\s(\d+)\s(\d+)$)/");
 std::regex patEnd(R"/(^END_PROCESS$)/");
 std::regex validOP(R"/(^(CPU|IO|WAIT)\s(\d+)$)/");
 
 /*
 Input file must be of form:
-STR_PROCESS "<string Name>" <int arrivalTime>
+STR_PROCESS "<string Name>" <int arrivalTime> <priority>
 OP1 <resource taken>
 OP2 <resource taken>
 OP3 <resource taken>
@@ -24,7 +27,7 @@ OP3 <resource taken>
 ..
 OPn <resource taken>
 END_PROCESS
-PROCESS "<string Name>" <int arrivalTime>
+PROCESS "<string Name>" <int arrivalTime> <priority>
 OP1 <resource taken>
 OP2 <resource taken>
 ..
@@ -35,10 +38,17 @@ etc
 OPs         Resource Type(must be integer)
 CPU         Cycles
 IO          Time(in TU)
-WAIT        Time(in TU)         
+WAIT        Time(in TU)
+PRIORITY    Optional, lower is higher priority
 */
 
+bool (*programArrivalCmp)(Program*, Program*) = [](Program* a, Program* b){
+    return a->getStartTime()<b->getStartTime();
+};
+int Scheduler::pid = 1000;
+
 Scheduler::Scheduler(const int& _cyclesPerTick, const int& _timeUnitsPerTick){
+    this->processTable = ProcessTable();
     this->cyclesPerTick = _cyclesPerTick;
     this->timeUnitsPerTick = _timeUnitsPerTick;
     this->idleTime=0;
@@ -46,7 +56,7 @@ Scheduler::Scheduler(const int& _cyclesPerTick, const int& _timeUnitsPerTick){
 }
 
 void Scheduler::reset(){
-    this->arrivalQueue = std::queue<Process>();
+    this->arrivalQueue.clear();
     this->idleTime=0;
     this->wastedCycles=0;
 }
@@ -56,7 +66,7 @@ void Scheduler::load(const std::string& _path){
     Process::timeToTick = this->timeUnitsPerTick;
     Process::cyclesToTick = this->cyclesPerTick;
 
-    this->arrivalQueue = std::queue<Process>();
+    this->arrivalQueue = Queue();
     std::vector<Program*> programs;
     std::string s, name="unknown";
     std::smatch match;
@@ -69,7 +79,7 @@ void Scheduler::load(const std::string& _path){
         if(!started && std::regex_match(s, match, patStart)){
             started=1;
             programs.push_back(new Program{
-                std::stoi(match[2]),(name = match[1])});
+                std::stoi(match[2]),(name = match[1]),std::stoi(match[3])});
         }
         else if(started && std::regex_match(s, match, validOP)){
             int _type;
@@ -79,28 +89,29 @@ void Scheduler::load(const std::string& _path){
             programs[programs.size()-1]->load(_type,std::stoi(match[2]));
         }
         else if(started && std::regex_match(s, match, patEnd)){
-            started=0;
+            started = 0;
             name = "unknown";
         }
         else throw FileException("Process"+name);
     }
     fd.close();
     
-    int pid = 1000;
-    std::sort(programs.begin(), programs.end(), [](Program* a, Program* b){return a->getStartTime()<b->getStartTime();});
+    std::sort(programs.begin(), programs.end(), programArrivalCmp);
+
     for(Program* c:programs){
-        Process P(pid++,c->getName(),{c->getStartTime(),0,0,0,0});
+        Process* P = new Process(c->getName(),{c->getStartTime(),0,0,0,0});
         try{
-            P.push({0,0}); // 0,0 = start
+            P->push({0,0}); // 0,0 = start
             while(1){
-                P.push(c->peek());
+                P->push(c->peek());
                 c->next();
             }
         }
         catch(OutOfBoundsException){
-            P.push({0,1});
-            arrivalQueue.push(P);
+            P->push({0,1});
+            this->arrivalQueue.push(Scheduler::pid);
         }
+        this->processTable.insert(Scheduler::pid++, P);
         delete c;
     }
 }

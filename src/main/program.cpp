@@ -6,11 +6,12 @@
 #include<cstdint>
 #include<utility>
 
-Program::Program(int _startTime=0,const std::string _name=""){
+Program::Program(int _startTime,const std::string _name, int _priority){
     this->content = new std::vector<std::pair<int,int>>;
     this->ptr = 0;
     this->startTime = _startTime;
     this->name = _name;
+    this->priority = _priority;
 }
 
 Program::~Program(){
@@ -55,6 +56,10 @@ size_t Program::tell(){
 
 int Program::getStartTime(){
     return this->startTime;
+}
+
+int Program::getPriority(){
+    return this->priority;
 }
 
 std::string Program::getName(){

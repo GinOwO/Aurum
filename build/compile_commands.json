@@ -1,0 +1,50 @@
+[
+{
+  "directory": "/home/gin/Desktop/Aurum/build",
+  "command": "/usr/bin/g++ -I/home/gin/Desktop/Aurum/include -g -std=gnu++20 -o CMakeFiles/Aurum.dir/main.cpp.o -c /home/gin/Desktop/Aurum/main.cpp",
+  "file": "/home/gin/Desktop/Aurum/main.cpp",
+  "output": "CMakeFiles/Aurum.dir/main.cpp.o"
+},
+{
+  "directory": "/home/gin/Desktop/Aurum/build",
+  "command": "/usr/bin/g++ -I/home/gin/Desktop/Aurum/include -g -std=gnu++20 -o CMakeFiles/Aurum.dir/src/algorithms/sjt/ljt.cpp.o -c /home/gin/Desktop/Aurum/src/algorithms/sjt/ljt.cpp",
+  "file": "/home/gin/Desktop/Aurum/src/algorithms/sjt/ljt.cpp",
+  "output": "CMakeFiles/Aurum.dir/src/algorithms/sjt/ljt.cpp.o"
+},
+{
+  "directory": "/home/gin/Desktop/Aurum/build",
+  "command": "/usr/bin/g++ -I/home/gin/Desktop/Aurum/include -g -std=gnu++20 -o CMakeFiles/Aurum.dir/src/main/ctexceptions.cpp.o -c /home/gin/Desktop/Aurum/src/main/ctexceptions.cpp",
+  "file": "/home/gin/Desktop/Aurum/src/main/ctexceptions.cpp",
+  "output": "CMakeFiles/Aurum.dir/src/main/ctexceptions.cpp.o"
+},
+{
+  "directory": "/home/gin/Desktop/Aurum/build",
+  "command": "/usr/bin/g++ -I/home/gin/Desktop/Aurum/include -g -std=gnu++20 -o CMakeFiles/Aurum.dir/src/main/process.cpp.o -c /home/gin/Desktop/Aurum/src/main/process.cpp",
+  "file": "/home/gin/Desktop/Aurum/src/main/process.cpp",
+  "output": "CMakeFiles/Aurum.dir/src/main/process.cpp.o"
+},
+{
+  "directory": "/home/gin/Desktop/Aurum/build",
+  "command": "/usr/bin/g++ -I/home/gin/Desktop/Aurum/include -g -std=gnu++20 -o CMakeFiles/Aurum.dir/src/main/program.cpp.o -c /home/gin/Desktop/Aurum/src/main/program.cpp",
+  "file": "/home/gin/Desktop/Aurum/src/main/program.cpp",
+  "output": "CMakeFiles/Aurum.dir/src/main/program.cpp.o"
+},
+{
+  "directory": "/home/gin/Desktop/Aurum/build",
+  "command": "/usr/bin/g++ -I/home/gin/Desktop/Aurum/include -g -std=gnu++20 -o CMakeFiles/Aurum.dir/src/main/ptable.cpp.o -c /home/gin/Desktop/Aurum/src/main/ptable.cpp",
+  "file": "/home/gin/Desktop/Aurum/src/main/ptable.cpp",
+  "output": "CMakeFiles/Aurum.dir/src/main/ptable.cpp.o"
+},
+{
+  "directory": "/home/gin/Desktop/Aurum/build",
+  "command": "/usr/bin/g++ -I/home/gin/Desktop/Aurum/include -g -std=gnu++20 -o CMakeFiles/Aurum.dir/src/main/queues.cpp.o -c /home/gin/Desktop/Aurum/src/main/queues.cpp",
+  "file": "/home/gin/Desktop/Aurum/src/main/queues.cpp",
+  "output": "CMakeFiles/Aurum.dir/src/main/queues.cpp.o"
+},
+{
+  "directory": "/home/gin/Desktop/Aurum/build",
+  "command": "/usr/bin/g++ -I/home/gin/Desktop/Aurum/include -g -std=gnu++20 -o CMakeFiles/Aurum.dir/src/main/scheduler.cpp.o -c /home/gin/Desktop/Aurum/src/main/scheduler.cpp",
+  "file": "/home/gin/Desktop/Aurum/src/main/scheduler.cpp",
+  "output": "CMakeFiles/Aurum.dir/src/main/scheduler.cpp.o"
+}
+]

@@ -11,10 +11,9 @@ void Process::kill(Process* p){
     delete p;
 }
 
-Process::Process(int _pid, std::string _name, 
+Process::Process(std::string _name, 
         const std::vector<int>& _times, int _priority){
     this->ptr=0;
-    this->pid=_pid;
     this->name=_name;
     this->times=std::vector<int>(_times);
     this->priority=_priority;
@@ -36,8 +35,33 @@ std::pair<int,int> Process::next(){
     return this->instructions[ptr++];
 }
 
-Process* Process::fork(int _pid){
-    Process* p = new Process(_pid, this->name, this->times);
+Process* Process::fork(){
+    Process* p = new Process(this->name, this->times);
     p->instructions = this->instructions;
+    p->priority = this->priority;
     return p;
+}
+
+int Process::getPriority() const{
+    return this->priority;
+}
+
+int Process::getArrivalTime() const{
+    return this->times[0];
+}
+
+int Process::getBurstTime() const{
+    return this->times[1];
+}
+
+int Process::getWaitingTime() const{
+    return this->times[2];
+}
+
+int Process::getTurnaroundTime() const{
+    return this->times[3];
+}
+
+int Process::getResponseTime() const{
+    return this->times[4];
 }
