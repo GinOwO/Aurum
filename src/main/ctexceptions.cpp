@@ -8,6 +8,7 @@ BaseException::BaseException(const std::string& _err_msg, const int _err_num){
     errorMessage=_err_msg;
     errorNumber=_err_num;
 }
+
 const char* BaseException::what() const throw(){
     return this->errorMessage.c_str();
 }
@@ -39,3 +40,9 @@ QueueNotFinalizedException::QueueNotFinalizedException(
 
 ProcessDoesNotExistException::ProcessDoesNotExistException(
     ):BaseException("ProcessDoesNotExistException Raised", 50) {}
+
+UnavailableAlgorithmException::UnavailableAlgorithmException(const std::string& _aname
+    ):BaseException("UnavailableAlgorithmException Raised "+_aname, 60) {}
+
+ExecutionCompletedException::ExecutionCompletedException(
+    ):BaseException("ExecutionCompletedException Raised", 70) {}

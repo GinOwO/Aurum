@@ -6,27 +6,20 @@
 #include<vector>
 #include<queue>
 
-/*
-bool (*processArrivalCmp)(Process*, Process*) = [](Process* a, Process* b){
-    return a->getArrivalTime()<b->getArrivalTime();
-};
-bool (*processPriorityCmp)(Process*, Process*) = [](Process* a, Process* b){
-    return a->getPriority()<b->getPriority() ||
-    (a->getPriority()==b->getPriority()&&a->getArrivalTime()<b->getArrivalTime());
-};
-*/
 class Queue{
-    std::vector<int> queue;
+protected:
+    std::vector<Process*> queue;
 public:
     Queue();
     ~Queue();
-    void push(int);
-    int pop();
-    int front();
+    void push(Process*);
+    Process* pop();
+    Process* front();
     int size();
     bool empty();
     void clear();
-    std::vector<int> getQueue() const;
+    std::vector<Process*> getQueue() const;
+    void sort(bool (*cmp)(Process*, Process*)=Process::processArrivalCmp);
 };
 
 #endif
