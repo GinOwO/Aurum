@@ -42,3 +42,4 @@ Make*
 .hidden
 *.code-workspace
 test.txt
+build
