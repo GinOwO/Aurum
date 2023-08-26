@@ -49,10 +49,19 @@ public:
     QueueNotFinalizedException();    
 };
 
+class UnavailableAlgorithmException: virtual public BaseException{
+public:
+    UnavailableAlgorithmException(const std::string&);
+};
+
 class ProcessDoesNotExistException: virtual public BaseException{
 public:
     ProcessDoesNotExistException();    
 };
 
+class ExecutionCompletedException: virtual public BaseException{
+public:
+    ExecutionCompletedException();    
+};
 
 #endif

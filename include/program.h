@@ -18,6 +18,9 @@ private:
 public:
     Program(int=0, const std::string="", int=5);
     ~Program();
+
+    static bool arrivalCmp(Program*, Program*);
+
     Program* clone(const Program*);
     void load(int, int);
 

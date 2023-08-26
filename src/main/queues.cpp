@@ -7,25 +7,25 @@
 #include<algorithm>
 
 Queue::Queue(){
-    queue = std::vector<int>();
+    queue = std::vector<Process*>();
 }
 
 Queue::~Queue(){
     clear();
 }
 
-void Queue::push(int pid){
+void Queue::push(Process* pid){
     queue.push_back(pid);
 }
 
-int Queue::pop(){
+Process* Queue::pop(){
     if(empty()) throw ProcessDoesNotExistException();
-    int pid = queue.front();
+    Process* pid = queue.front();
     queue.erase(queue.begin());
     return pid;
 }
 
-int Queue::front(){
+Process* Queue::front(){
     if(empty()) throw ProcessDoesNotExistException();
     return queue.front();
 }
@@ -42,6 +42,10 @@ void Queue::clear(){
     queue.clear();
 }
 
-std::vector<int> Queue::getQueue() const{
+std::vector<Process*> Queue::getQueue() const{
     return queue;
+}
+
+void Queue::sort(bool (*cmp)(Process*, Process*)){
+    std::sort(queue.begin(), queue.end(), cmp);
 }

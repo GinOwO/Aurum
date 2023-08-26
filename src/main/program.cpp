@@ -69,3 +69,7 @@ std::string Program::getName(){
 std::pair<int,int> Program::peek(){
     return this->get(ptr);
 }
+
+bool Program::arrivalCmp(Program* a, Program* b){
+    return a->getStartTime()<b->getStartTime();
+}
