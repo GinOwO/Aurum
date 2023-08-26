@@ -1,10 +1,10 @@
+#ifndef _SCHV_PROGRAM_H
+#define _SCHV_PROGRAM_H 1
+
 #include <string>
 #include <vector>
 #include <cstdint>
 #include <utility>
-
-#ifndef _SCHV_PROGRAM_H
-#define _SCHV_PROGRAM_H 1
 
 class Program{
 private:

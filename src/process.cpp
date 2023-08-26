@@ -7,13 +7,17 @@
 
 int Process::timeToTick = 0;
 int Process::cyclesToTick = 0;
+void Process::kill(Process* p){
+    delete p;
+}
 
 Process::Process(int _pid, std::string _name, 
-        const std::vector<int>& _times){
+        const std::vector<int>& _times, int _priority){
     this->ptr=0;
     this->pid=_pid;
     this->name=_name;
-    this->times=_times;
+    this->times=std::vector<int>(_times);
+    this->priority=_priority;
 }
 
 void Process::push(const std::pair<int,int>& instr){
@@ -28,7 +32,12 @@ void Process::push(const std::pair<int,int>& instr){
 }
 
 std::pair<int,int> Process::next(){
-    // TODO MAKE EXP
-    if(ptr>instructions.size()) throw OutOfBoundsException();
+    if(ptr>=instructions.size()) throw EndOfFileException();
     return this->instructions[ptr++];
+}
+
+Process* Process::fork(int _pid){
+    Process* p = new Process(_pid, this->name, this->times);
+    p->instructions = this->instructions;
+    return p;
 }

@@ -27,3 +27,6 @@ InvalidInputException::InvalidInputException(
 
 FileException::FileException(std::string _pname
     ):BaseException("FileException Raised due to "+_pname, 30) {}
+
+EndOfFileException::EndOfFileException(
+    ):BaseException("EndOfFileException Raised", 35) {}

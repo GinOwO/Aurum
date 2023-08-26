@@ -1,3 +1,6 @@
+#ifndef _SCHV_QUEUE_H
+#define _SCHV_QUEUE_H 1
+
 #include "program.h"
 #include "ctexceptions.h"
 #include "process.h"
@@ -7,9 +10,6 @@
 #include<queue>
 
 // TODO
-
-#ifndef _SCHV_SCHEDULER_H
-#define _SCHV_SCHEDULER_H 1
 
 class Scheduler{
     int idleTime;

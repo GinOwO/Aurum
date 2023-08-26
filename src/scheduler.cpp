@@ -103,5 +103,4 @@ void Scheduler::load(const std::string& _path){
         }
         delete c;
     }
-    return;
 }

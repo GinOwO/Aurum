@@ -1,8 +1,8 @@
-#include<exception>
-#include<string>
-
 #ifndef _SCHV_CUSTOM_EXCEPTIONS_H
 #define _SCHV_CUSTOM_EXCEPTIONS_H 1
+
+#include<exception>
+#include<string>
 
 class BaseException:virtual public std::exception{
 protected:
@@ -27,6 +27,11 @@ public:
 class InvalidInputException: virtual public BaseException{
 public:
     InvalidInputException();    
+};
+
+class EndOfFileException: virtual public BaseException{
+public:
+    EndOfFileException();    
 };
 
 class FileException: virtual public BaseException{
