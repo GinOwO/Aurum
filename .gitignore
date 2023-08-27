@@ -43,3 +43,4 @@ Make*
 *.code-workspace
 test.txt
 build
+CMakeLists.txt.user
