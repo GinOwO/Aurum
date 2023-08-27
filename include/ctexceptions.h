@@ -59,5 +59,9 @@ public:
     ProcessDoesNotExistException();    
 };
 
+class ExecutionCompletedException: virtual public BaseException{
+public:
+    ExecutionCompletedException();    
+};
 
 #endif

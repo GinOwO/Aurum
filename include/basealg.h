@@ -16,6 +16,7 @@ protected:
     int timePerTick;
     int cyclesPerTick;
     int ticksElapsed;
+    int totalProcesses;
 
 public:
     BaseAlgorithm(Queue* arrivalQueue, Queue* readyQueue, Queue* waitingQueue,
@@ -28,6 +29,7 @@ public:
         this->timePerTick = timePerTick;
         this->cyclesPerTick = cyclesPerTick;
         this->ticksElapsed = 0;
+        this->totalProcesses = this->arrivalQueue->size();
     };
 
     void arrivalLoad(){
@@ -42,6 +44,14 @@ public:
             }
             process = nullptr;
         }
+    }
+
+    int getTicksElapsed(){
+        return this->ticksElapsed;
+    }
+
+    bool completed(){
+        return this->deadQueue->size()>=this->totalProcesses;
     }
 
     virtual void run() = 0; // A single tick

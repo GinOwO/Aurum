@@ -43,3 +43,6 @@ ProcessDoesNotExistException::ProcessDoesNotExistException(
 
 UnavailableAlgorithmException::UnavailableAlgorithmException(const std::string& _aname
     ):BaseException("UnavailableAlgorithmException Raised "+_aname, 60) {}
+
+ExecutionCompletedException::ExecutionCompletedException(
+    ):BaseException("ExecutionCompletedException Raised", 70) {}

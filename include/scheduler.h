@@ -11,6 +11,7 @@
 #include<vector>
 #include<string>
 #include<queue>
+#include<map>
 
 class Scheduler{
     int idleTime;
@@ -23,8 +24,12 @@ class Scheduler{
     Queue waitingQueue;
     Queue blockedQueue;
     Queue deadQueue;
+    std::map<int,int> ganttChart;
     ProcessTable processTable;
     BaseAlgorithm* algorithm;
+
+    // TODO remove these
+    void dispState();
 public:
     static int pid;
 

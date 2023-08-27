@@ -7,6 +7,7 @@
 #include "ptable.h"
 #include "schalg.h"
 
+#include<iostream>
 #include<regex>
 #include<cctype>
 #include<vector>
@@ -59,6 +60,7 @@ Scheduler::Scheduler(const int& _cyclesPerTick, const int& _timeUnitsPerTick){
     this->waitingQueue = Queue();
     this->blockedQueue = Queue();
     this->deadQueue = Queue();
+    this->ganttChart = std::map<int, int>();
 }
 
 void Scheduler::reset(){
@@ -129,6 +131,7 @@ void Scheduler::load(const std::string& _path){
             P->setBurstTime(ticks);
             ticks = 0;
             this->arrivalQueue.push(P);
+            P->setPID(Scheduler::pid);
             this->processTable.insert(Scheduler::pid++, P);
         }
         delete c;
@@ -140,9 +143,9 @@ void Scheduler::load(const std::string& _path){
 void Scheduler::selectAlgorithm(const std::string& name){
     if(!availableAlgorithms.count(name))
         throw UnavailableAlgorithmException(name);
-    if(name=="Longest Job First"){
+    if(name=="Longest Remaining Job First"){
         this->algorithmID = 1;
-        this->algorithm = new LongestJobFirst(&this->arrivalQueue,
+        this->algorithm = new LongestRemainingJobFirst(&this->arrivalQueue,
             &this->readyQueue, &this->waitingQueue, &this->blockedQueue,
             &this->deadQueue, this->timeUnitsPerTick, this->cyclesPerTick);
     }/*
@@ -177,6 +180,39 @@ void Scheduler::selectAlgorithm(const std::string& name){
 void Scheduler::simulate(){
     if(!this->algorithm) throw FatalException();
     while(1){
-        this->algorithm->run();
+        try{
+            this->algorithm->run();
+            
+            if(!readyQueue.empty()){
+                if(!ganttChart.size()) ganttChart[this->algorithm->getTicksElapsed()]=readyQueue.front()->getPID();
+                else if(ganttChart.rbegin()->second!=readyQueue.front()->getPID())
+                    ganttChart[this->algorithm->getTicksElapsed()]=readyQueue.front()->getPID();
+            }
+            else this->idleTime++;
+        }
+        catch(ExecutionCompletedException){
+            std::cout << "Execution Completed.\n";
+            break;
+        }
     }
+    for(auto&c:ganttChart) std::cout << c.first << "\t";
+    std::cout << '\n';
+    for(auto&c:ganttChart) std::cout << c.second << "\t";
+    std::cout << '\n';
+}
+
+
+// TODO REMOVE THIS
+void Scheduler::dispState(){
+    std::cout << "Ticks Elapsed:"<< this->algorithm->getTicksElapsed() <<"\nArrival Queue:";
+    for(auto&c:arrivalQueue.getQueue()) std::cout << c->getName() << " ";
+    std::cout << "\nReady Queue:";
+    for(auto&c:readyQueue.getQueue()) std::cout << c->getName() << " ";
+    std::cout << "\nWaiting Queue:";
+    for(auto&c:waitingQueue.getQueue()) std::cout << c->getName() << " ";
+    std::cout << "\nBlocked Queue:";
+    for(auto&c:blockedQueue.getQueue()) std::cout << c->getName() << " ";
+    std::cout << "\nDead Queue:";
+    for(auto&c:deadQueue.getQueue()) std::cout << c->getName() << " ";
+    std::cout << "\n\n";
 }

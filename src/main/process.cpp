@@ -47,6 +47,7 @@ int Process::updateFront(int t){
     this->instructions[ptr].second=std::max(
         this->instructions[ptr].second-t, 0
     );
+    this->burstTime=std::max(this->burstTime-t, 0);
     return this->instructions[ptr].second;
 }
 
@@ -66,8 +67,7 @@ int Process::getArrivalTime() const{
 }
 
 bool Process::eof() const{
-    return this->ptr>=this->instructions.size() || this->instructions.size()==0 ||
-        (!this->instructions[this->ptr].first&&this->instructions[this->ptr].second);
+    return this->ptr>this->instructions.size() || this->instructions.size()==0;
 }
 
 int Process::getBurstTime() const{
@@ -76,6 +76,10 @@ int Process::getBurstTime() const{
 
 int Process::getWaitingTime() const{
     return this->waitingTime;
+}
+
+int Process::getPID() const{
+    return this->pid;
 }
 
 void Process::setPriority(int _priority){
@@ -94,8 +98,15 @@ void Process::setWaitingTime(int _waitingTime){
     this->waitingTime=_waitingTime;
 }
 
-// Comparators
+void Process::setPID(int _pid){
+    this->pid=_pid;
+}
 
+std::string Process::getName() const{
+    return this->name;
+}
+
+// Comparators
 bool Process::processNameCmp(Process* a, Process* b){
     return a->name<b->name;
 }

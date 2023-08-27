@@ -2,13 +2,13 @@
 #define _AURUM_SCHEDULING_ALGORITHMS_H 1
 
 #include "basealg.h"
-#include "ljt.h"
+#include "lrjt.h"
 
 #include<set>
 #include<string>
 
 const std::set<std::string> availableAlgorithms = {
-    "Longest Job First", // id: 1
+    "Longest Remaining Job First", // id: 1
 };
 
 #endif

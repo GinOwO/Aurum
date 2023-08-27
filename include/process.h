@@ -7,6 +7,7 @@
 
 class Process{
     int ptr;
+    int pid;
     int priority;
     int arrivalTime;
     int burstTime;
@@ -17,13 +18,11 @@ public:
     static int timeToTick;
     static int cyclesToTick;
     static void kill(Process*);
+    static bool processNameCmp(Process*, Process*);
     static bool processArrivalCmp(Process*, Process*);
     static bool processPriorityCmp(Process*, Process*);
     static bool processBurstCmp(Process*, Process*);
     static bool processWaitingCmp(Process*, Process*);
-    static bool processTurnaroundCmp(Process*, Process*);
-    static bool processResponseCmp(Process*, Process*);
-    static bool processNameCmp(Process*, Process*);
 
     Process(std::string, int, int, int, int=5);
     void push(const std::pair<int,int>&);
@@ -38,11 +37,14 @@ public:
     int getArrivalTime() const;
     int getBurstTime() const;
     int getWaitingTime() const;
+    int getPID() const;
+    std::string getName() const;
 
     void setPriority(int);
     void setArrivalTime(int);
     void setBurstTime(int);
     void setWaitingTime(int);
+    void setPID(int);
 };
 
 #endif

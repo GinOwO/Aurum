@@ -4,7 +4,7 @@
 int main(int argc, char const *argv[]){
     Scheduler a{100,1};
     a.load("./test.txt");
-    a.selectAlgorithm("Longest Job First");
+    a.selectAlgorithm("Longest Remaining Job First");
     a.simulate();
     return 0;
 }
