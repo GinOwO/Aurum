@@ -4,6 +4,7 @@
 #include "process.h"    // Path: include/process.h
 #include "queues.h"     // Path: include/queues.h
 #include "basealg.h"    // Path: include/basealg.h
+#include "ctexceptions.h"    // Path: include/ctexceptions.h
 
 class ShortestJobFirst : public BaseAlgorithm{
 public:
