@@ -6,9 +6,9 @@
 #include "basealg.h"         // Path: include/basealog.h
 #include "ctexceptions.h"    // Path: include/ctexceptions.h
 
-class RoundRobin : public BaseAlgorithm {
+class RoundRobin : public BaseAlgorithm{
 public:
-    RoundRobin(Queue* aq, Queue* rq, Queue* wq, Queue* bq, Queue* dq, int ttt, int ctt, int tq);
+    RoundRobin(Queue*,Queue*,Queue*,Queue*,Queue*,int,int,int);
     void run() override;
 
 private:
