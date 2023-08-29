@@ -165,7 +165,7 @@ void Scheduler::selectAlgorithm(const std::string& name){
         this->algorithmID = 4;
         this->algorithm = new RoundRobin(
             &this->arrivalQueue, &this->readyQueue, &this->waitingQueue, &this->blockedQueue,
-            &this->deadQueue, this->timeUnitsPerTick, this->cyclesPerTick);
+            &this->deadQueue, this->timeUnitsPerTick, this->cyclesPerTick, this->timeQuantum);
     }/*
     else if(name=="Priority"){
         this->algorithmID = 5;
