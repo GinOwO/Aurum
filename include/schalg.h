@@ -3,6 +3,7 @@
 
 #include "basealg.h"
 #include "lrjt.h"
+#include "srjt.h"
 
 #include<set>
 #include<string>
