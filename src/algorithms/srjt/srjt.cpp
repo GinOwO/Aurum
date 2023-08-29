@@ -1,20 +1,20 @@
-#include "srjt.h"    //Path: include/sjf.h
+#include "srjt.h"    //Path: include/srjt.h
 
 #include "process.h"    // Path: include/process.h
 #include "queues.h"     // Path: include/queues.h
 #include "basealg.h"    // Path: include/basealg.h
 #include "ctexceptions.h"   // Path: include/ctexceptions.h
 
-ShortestJobFirst::ShortestJobFirst(
+ShortestRemainingJobFirst::ShortestRemainingJobFirst(
     Queue* aq, Queue* rq, Queue* wq, Queue* bq, Queue* dq, int ttt, int ctt):
     BaseAlgorithm(aq, rq, wq, bq, dq, ttt, ctt) {
 }
 
-bool ShortestJobFirst::comparator(Process *p1, Process *p2) {
+bool ShortestRemainingJobFirst::comparator(Process *p1, Process *p2) {
     return Process::processBurstCmp(p1, p2);
 }
 
-void ShortestJobFirst::run() {
+void ShortestRemainingJobFirst::run() {
     if (completed()) throw ExecutionCompletedException();
     Process *process = nullptr;
     this->ticksElapsed++; 
