@@ -9,6 +9,7 @@
 
 const std::set<std::string> availableAlgorithms = {
     "Longest Remaining Job First", // id: 1
+    "Shortest Remaining Job First", // id: 2
 };
 
 #endif
