@@ -54,6 +54,7 @@ Scheduler::Scheduler(const int& _cyclesPerTick, const int& _timeUnitsPerTick){
     this->idleTime=0;
     this->wastedCycles=0;
     this->algorithmID=0;
+    this->timeQuantum=2;
     this->algorithm = nullptr;
     this->arrivalQueue = Queue();
     this->readyQueue = Queue();
