@@ -19,6 +19,7 @@ class Scheduler{
     int cyclesPerTick;
     int timeUnitsPerTick;
     int algorithmID;
+    int timeQuantum;
     Queue arrivalQueue;
     Queue readyQueue;
     Queue waitingQueue;
