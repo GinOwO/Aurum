@@ -54,6 +54,7 @@ Scheduler::Scheduler(const int& _cyclesPerTick, const int& _timeUnitsPerTick){
     this->idleTime=0;
     this->wastedCycles=0;
     this->algorithmID=0;
+    this->timeQuantum=2;
     this->algorithm = nullptr;
     this->arrivalQueue = Queue();
     this->readyQueue = Queue();
@@ -148,25 +149,25 @@ void Scheduler::selectAlgorithm(const std::string& name){
         this->algorithm = new LongestRemainingJobFirst(&this->arrivalQueue,
             &this->readyQueue, &this->waitingQueue, &this->blockedQueue,
             &this->deadQueue, this->timeUnitsPerTick, this->cyclesPerTick);
-    }/*
-    else if(name=="Shortest Job First"){
-        this->algorithmID = 2;
-        this->algorithm = new ShortestJobFirst(
-            &this->arrivalQueue, &this->waitingQueue, &this->blockedQueue,
-            &this->deadQueue, this->timeUnitsPerTick, this->cyclesPerTick);
     }
+    else if(name=="Shortest Remaining Job First"){
+        this->algorithmID = 2;
+        this->algorithm = new ShortestRemainingJobFirst(
+            &this->arrivalQueue, &this->readyQueue, &this->waitingQueue, &this->blockedQueue,
+            &this->deadQueue, this->timeUnitsPerTick, this->cyclesPerTick);
+    }/*
     else if(name=="First Come First Serve"){
         this->algorithmID = 3;
         this->algorithm = new FirstComeFirstServe(
             &this->arrivalQueue, &this->waitingQueue, &this->blockedQueue,
             &this->deadQueue, this->timeUnitsPerTick, this->cyclesPerTick);
-    }
+    }*/
     else if(name=="Round Robin"){
         this->algorithmID = 4;
         this->algorithm = new RoundRobin(
-            &this->arrivalQueue, &this->waitingQueue, &this->blockedQueue,
-            &this->deadQueue, this->timeUnitsPerTick, this->cyclesPerTick);
-    }
+            &this->arrivalQueue, &this->readyQueue, &this->waitingQueue, &this->blockedQueue,
+            &this->deadQueue, this->timeUnitsPerTick, this->cyclesPerTick, this->timeQuantum);
+    }/*
     else if(name=="Priority"){
         this->algorithmID = 5;
         this->algorithm = new Priority(
