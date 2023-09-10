@@ -44,3 +44,5 @@ Make*
 test.txt
 build
 CMakeLists.txt.user
+.qt
+Aurum_autogen
