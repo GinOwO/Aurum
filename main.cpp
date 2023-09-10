@@ -1,10 +1,14 @@
-#include<iostream>
-#include "scheduler.h"
+#include <QApplication>
+#include "src/mainwindow.h" // Include your main window header
 
-int main(int argc, char const *argv[]){
-    Scheduler a{100,1};
-    a.load("./test.txt");
-    a.selectAlgorithm("Longest Remaining Job First");
-    a.simulate();
-    return 0;
+int main(int argc, char *argv[])
+{
+    QApplication app(argc, argv);
+
+    // Create and show the main window
+    MainWindow mainWindow;
+    mainWindow.show();
+
+    // Start the main event loop
+    return app.exec();
 }
