@@ -3,6 +3,8 @@
 
 #include "scheduler.h"
 
+#include<vector>
+
 #include <QMainWindow>
 #include <QString>
 
@@ -16,14 +18,17 @@ class ProcessWindow : public QMainWindow{
 public:
     explicit ProcessWindow(QWidget *parent = nullptr);
     ~ProcessWindow();
-    void setWindow(QString, int, Scheduler*);
-    void start();
+    void setWindow(QString, Scheduler*);
+    void init();
+
+private slots:
+    void on_process_select();
 
 private:
     Ui::ProcessWindow *ui;
+    std::vector<int> processList;
     Scheduler* scheduler;
     QString filePath;
-    int stackSize;
 };
 
 #endif // PROCESSWINDOW_H

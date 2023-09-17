@@ -4,6 +4,7 @@
 #include "process.h"
 
 #include<unordered_map>
+#include<string>
 
 class ProcessTable{
     std::unordered_map<int, Process*> table;
@@ -15,6 +16,9 @@ public:
     bool exists(int);
     void clear();
     Process* getProcess(int);
+
+    std::string viewProcess(int);
+    std::vector<int> listProcesses();
 };
 
 #endif

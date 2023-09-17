@@ -33,6 +33,9 @@ if(Qt${QT_VERSION_MAJOR}_FOUND)
             ${PROJECT_SOURCES}
             src/ui/startwindow.h src/ui/startwindow.cpp src/ui/startwindow.ui
             src/ui/processwindow.h src/ui/processwindow.cpp src/ui/processwindow.ui
+            src/ui/queuewindow.h src/ui/queuewindow.cpp src/ui/queuewindow.ui
+
+
 
 
 

@@ -32,6 +32,10 @@ void Process::push(const std::pair<int,int>& instr){
     this->instructions.push_back({instr.first, q});
 }
 
+std::vector<std::pair<int,int>> Process::viewInstr() const{
+    return this->instructions;
+}
+
 std::pair<int,int> Process::next(){
     if(eof()) throw EndOfFileException();
     return this->instructions[ptr++];

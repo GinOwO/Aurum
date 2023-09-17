@@ -22,11 +22,12 @@ StartWindow::~StartWindow(){
 }
 
 void StartWindow::on_buttonBox_accepted(){
-    QString folderPath = ui->textEdit->toPlainText();
+    QString filePath = ui->textEdit->toPlainText();
     int stackSize = ui->textEdit_3->toPlainText().toInt();
     QString algo = ui->dropDownBox->currentText();
     scheduler->selectAlgorithm(algo.toStdString());
-    processWindow->setWindow(folderPath, stackSize, scheduler);
+    processWindow->setWindow(filePath, scheduler);
+    processWindow->init();
     processWindow->show();
     accept();
 }

@@ -1,9 +1,6 @@
 #ifndef _AURUM_QUEUE_H
 #define _AURUM_QUEUE_H 1
 
-#include "ctexceptions.h"
-#include "program.h"
-#include "process.h"
 #include "ptable.h"
 #include "queues.h"
 #include "basealg.h"
@@ -26,19 +23,21 @@ class Scheduler{
     Queue blockedQueue;
     Queue deadQueue;
     std::map<int,int> ganttChart;
-    ProcessTable processTable;
     BaseAlgorithm* algorithm;
 
-    // TODO remove these
-    void dispState();
 public:
     static int pid;
 
+    ProcessTable processTable;
     Scheduler(const int&,const int&);
     void load(const std::string&);
     void reset();
-    void simulate();
     void selectAlgorithm(const std::string&);
+
+    void nextTick();
+
+    // TODO : Remove this
+    void simulate();
 };
 
 #endif

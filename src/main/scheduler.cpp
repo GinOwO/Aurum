@@ -201,19 +201,3 @@ void Scheduler::simulate(){
     for(auto&c:ganttChart) std::cout << c.second << "\t";
     std::cout << '\n';
 }
-
-
-// TODO REMOVE THIS
-void Scheduler::dispState(){
-    std::cout << "Ticks Elapsed:"<< this->algorithm->getTicksElapsed() <<"\nArrival Queue:";
-    for(auto&c:arrivalQueue.getQueue()) std::cout << c->getName() << " ";
-    std::cout << "\nReady Queue:";
-    for(auto&c:readyQueue.getQueue()) std::cout << c->getName() << " ";
-    std::cout << "\nWaiting Queue:";
-    for(auto&c:waitingQueue.getQueue()) std::cout << c->getName() << " ";
-    std::cout << "\nBlocked Queue:";
-    for(auto&c:blockedQueue.getQueue()) std::cout << c->getName() << " ";
-    std::cout << "\nDead Queue:";
-    for(auto&c:deadQueue.getQueue()) std::cout << c->getName() << " ";
-    std::cout << "\n\n";
-}

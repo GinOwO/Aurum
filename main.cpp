@@ -1,6 +1,8 @@
 #include "scheduler.h"
 
 #include "src/ui/startwindow.h"
+#include "src/ui/processwindow.h"
+#include "src/ui/queuewindow.h"
 
 #include <QApplication>
 
