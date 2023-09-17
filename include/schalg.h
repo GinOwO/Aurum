@@ -7,12 +7,19 @@
 #include "rr.h"
 
 #include<set>
+#include<map>
 #include<string>
 
-const std::set<std::string> availableAlgorithms = {
-    "Longest Remaining Job First", // id: 1
-    "Shortest Remaining Job First", // id: 2
-    "Round Robin", // id: 4
+const std::map<int,std::string> availableAlgorithmsMap = {
+    {1,"Longest Remaining Job First"},
+    {2,"Shortest Remaining Job First"},
+    {4,"Round Robin"},
 };
+
+const std::set<std::string> availableAlgorithms = [](){
+    std::set<std::string> st;
+    for(auto&[_,b]:availableAlgorithmsMap) st.insert(b);
+    return st;
+}();
 
 #endif

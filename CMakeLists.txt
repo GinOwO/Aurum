@@ -31,7 +31,11 @@ if(Qt${QT_VERSION_MAJOR}_FOUND)
     qt_add_executable(Aurum
             MANUAL_FINALIZATION
             ${PROJECT_SOURCES}
-            src/mainwindow.h src/mainwindow.cpp src/mainwindow.ui
+            src/ui/startwindow.h src/ui/startwindow.cpp src/ui/startwindow.ui
+            src/ui/processwindow.h src/ui/processwindow.cpp src/ui/processwindow.ui
+
+
+
     )
 
     target_link_libraries(Aurum PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
