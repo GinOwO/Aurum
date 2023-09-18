@@ -25,6 +25,7 @@ public:
     static bool processWaitingCmp(Process*, Process*);
 
     Process(std::string, int, int, int, int=5);
+    std::vector<std::pair<int,int>> viewInstr() const;
     void push(const std::pair<int,int>&);
     std::pair<int,int> next();
     std::pair<int,int> peek();

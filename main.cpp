@@ -1,14 +1,23 @@
-#include <QApplication>
-#include "src/mainwindow.h" // Include your main window header
+#include "scheduler.h"
 
-int main(int argc, char *argv[])
-{
+#include "src/ui/startwindow.h"
+#include "src/ui/processwindow.h"
+#include "src/ui/queuewindow.h"
+
+#include <QApplication>
+#include <QMainWindow>
+#include <QWidget>
+
+int main(int argc, char *argv[]){
     QApplication app(argc, argv);
 
-    // Create and show the main window
-    MainWindow mainWindow;
-    mainWindow.show();
+    ProcessWindow processWindow;
+    QueueWindow queueWindow;
+    Scheduler scheduler(100,1);
 
-    // Start the main event loop
+    StartWindow startWindow;
+    startWindow.setWindow(&processWindow,&scheduler,&queueWindow);
+    startWindow.show();
+
     return app.exec();
 }

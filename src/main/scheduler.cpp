@@ -7,7 +7,7 @@
 #include "ptable.h"
 #include "schalg.h"
 
-#include<iostream>
+#include<sstream>
 #include<regex>
 #include<cctype>
 #include<vector>
@@ -61,7 +61,7 @@ Scheduler::Scheduler(const int& _cyclesPerTick, const int& _timeUnitsPerTick){
     this->waitingQueue = Queue();
     this->blockedQueue = Queue();
     this->deadQueue = Queue();
-    this->ganttChart = std::map<int, int>();
+    this->ganttChart = std::vector<std::pair<int, int>>();
 }
 
 void Scheduler::reset(){
@@ -106,7 +106,6 @@ void Scheduler::load(const std::string& _path){
     fd.close();
     
     int prev=0, ticks=0;
-    double _time=0;
     for(Program* c:programs){
         Process* P = new Process(c->getName(),c->getStartTime(),0,0,c->getPriority());
         try{
@@ -115,14 +114,7 @@ void Scheduler::load(const std::string& _path){
                 int tt = 1;
                 if(c->peek().first==1) tt = this->cyclesPerTick;
                 else if(c->peek().first>1) tt = this->timeUnitsPerTick;
-                if(c->peek().first==prev){
-                    _time+=ceil(c->peek().second/tt);
-                }
-                else{
-                    prev=c->peek().first;
-                    ticks+=_time;
-                    _time=ceil(c->peek().second/tt);
-                }
+                ticks+=ceil(c->peek().second/tt);
                 P->push(c->peek());
                 c->next();
             }
@@ -138,19 +130,20 @@ void Scheduler::load(const std::string& _path){
         delete c;
     }
     this->arrivalQueue.sort();
-    return;
 }
 
 void Scheduler::selectAlgorithm(const std::string& name){
     if(!availableAlgorithms.count(name))
         throw UnavailableAlgorithmException(name);
+    if(this->arrivalQueue.empty())
+        throw InvalidInputException();
     if(name=="Longest Remaining Job First"){
         this->algorithmID = 1;
         this->algorithm = new LongestRemainingJobFirst(&this->arrivalQueue,
             &this->readyQueue, &this->waitingQueue, &this->blockedQueue,
             &this->deadQueue, this->timeUnitsPerTick, this->cyclesPerTick);
     }
-    else if(name=="Shortest Remaining Job First"){
+    else if(name=="Shortest Job First"){
         this->algorithmID = 2;
         this->algorithm = new ShortestRemainingJobFirst(
             &this->arrivalQueue, &this->readyQueue, &this->waitingQueue, &this->blockedQueue,
@@ -178,42 +171,76 @@ void Scheduler::selectAlgorithm(const std::string& name){
     
 }
 
-void Scheduler::simulate(){
-    if(!this->algorithm) throw FatalException();
-    while(1){
-        try{
-            this->algorithm->run();
-            
-            if(!readyQueue.empty()){
-                if(!ganttChart.size()) ganttChart[this->algorithm->getTicksElapsed()]=readyQueue.front()->getPID();
-                else if(ganttChart.rbegin()->second!=readyQueue.front()->getPID())
-                    ganttChart[this->algorithm->getTicksElapsed()]=readyQueue.front()->getPID();
-            }
-            else this->idleTime++;
-        }
-        catch(ExecutionCompletedException){
-            std::cout << "Execution Completed.\n";
-            break;
-        }
-    }
-    for(auto&c:ganttChart) std::cout << c.first << "\t";
-    std::cout << '\n';
-    for(auto&c:ganttChart) std::cout << c.second << "\t";
-    std::cout << '\n';
+State Scheduler::getState(){
+    State state;
+    state.ticksElapsed = this->algorithm->getTicksElapsed();
+    state.idleTime = this->idleTime;
+    state.wastedCycles = this->wastedCycles;
+    state.arrivalQueue = this->arrivalQueue.cloneQueue();
+    state.readyQueue = this->readyQueue.cloneQueue();
+    state.waitingQueue = this->waitingQueue.cloneQueue();
+    state.deadQueue = this->deadQueue.cloneQueue();
+    state.blockedQueue = this->blockedQueue.cloneQueue();
+    state.ganttChart = std::vector<std::pair<int,int>>(this->ganttChart);
+    return state;
 }
 
+void Scheduler::setState(State state){
+    this->algorithm->setTicksElapsed(state.ticksElapsed);
+    this->idleTime = state.idleTime;
+    this->wastedCycles = state.wastedCycles;
+    this->arrivalQueue = state.arrivalQueue;
+    this->readyQueue = state.readyQueue;
+    this->waitingQueue = state.waitingQueue;
+    this->deadQueue = state.deadQueue;
+    this->blockedQueue = state.blockedQueue;
+    this->ganttChart = state.ganttChart;
+}
 
-// TODO REMOVE THIS
-void Scheduler::dispState(){
-    std::cout << "Ticks Elapsed:"<< this->algorithm->getTicksElapsed() <<"\nArrival Queue:";
-    for(auto&c:arrivalQueue.getQueue()) std::cout << c->getName() << " ";
-    std::cout << "\nReady Queue:";
-    for(auto&c:readyQueue.getQueue()) std::cout << c->getName() << " ";
-    std::cout << "\nWaiting Queue:";
-    for(auto&c:waitingQueue.getQueue()) std::cout << c->getName() << " ";
-    std::cout << "\nBlocked Queue:";
-    for(auto&c:blockedQueue.getQueue()) std::cout << c->getName() << " ";
-    std::cout << "\nDead Queue:";
-    for(auto&c:deadQueue.getQueue()) std::cout << c->getName() << " ";
-    std::cout << "\n\n";
+void Scheduler::nextTick(){
+    if(!this->algorithm) throw FatalException();
+    this->algorithm->run();
+    if(!readyQueue.empty()){
+        if(!ganttChart.size() || ganttChart.rbegin()->second!=readyQueue.front()->getPID())
+            ganttChart.push_back({this->algorithm->getTicksElapsed(),readyQueue.front()->getPID()});
+    }
+    else{
+        this->idleTime++;
+        this->wastedCycles+=cyclesPerTick;
+        if(!ganttChart.size() || ganttChart.rbegin()->second!=-1)
+            ganttChart.push_back({this->algorithm->getTicksElapsed(),-1});
+    }
+}
+
+Process* Scheduler::fork(int pid){
+    auto p = this->processTable.getProcess(pid)->fork();
+    p->setPID(Scheduler::pid);
+    this->processTable.insert(Scheduler::pid++,p);
+    return p;
+}
+
+bool Scheduler::isCompleted(){
+    return this->algorithm != nullptr && this->algorithm->completed();
+}
+
+std::string Scheduler::getAlgorithmName() const{
+    if(this->algorithmID<1)
+        throw UnavailableAlgorithmException("Alg Not Selected");
+    return availableAlgorithmsMap.at(this->algorithmID);
+}
+
+std::string Scheduler::logging() const{
+    std::stringstream ss;
+    ss << "Ticks Elapsed:     " << this->algorithm->getTicksElapsed() << "\nArrival Queue:     ";
+    for(auto&c:arrivalQueue.getQueue()) ss << c->getPID() << "  ";
+    ss << "\nReady Queue:      ";
+    for(auto&c:readyQueue.getQueue()) ss << c->getPID() << "  ";
+    ss << "\nWaiting Queue:  ";
+    for(auto&c:waitingQueue.getQueue()) ss << c->getPID() << "  ";
+    ss << "\nBlocked Queue:  ";
+    for(auto&c:blockedQueue.getQueue()) ss << c->getPID() << "  ";
+    ss << "\nDead Queue:       ";
+    for(auto&c:deadQueue.getQueue()) ss << c->getPID() << "  ";
+    ss << "\n\n";
+    return ss.str();
 }

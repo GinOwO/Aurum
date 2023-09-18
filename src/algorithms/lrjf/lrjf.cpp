@@ -1,4 +1,4 @@
-#include "lrjt.h"        // Path: include/lrjt.h
+#include "lrjf.h"        // Path: include/lrjt.h
 
 #include "process.h"    // Path: include/process.h
 #include "queues.h"     // Path: include/queues.h
@@ -24,7 +24,8 @@ void LongestRemainingJobFirst::run(){
 
     if(!blockedQueue->empty()){
         process = blockedQueue->front();
-        if(!process->updateFront(timePerTick)){
+        process->setWaitingTime(process->getWaitingTime()+timePerTick);
+        if(!process->updateFront(1)){
             process->next();
             if(process->eof()) deadQueue->push(blockedQueue->pop());
             else readyQueue->push(blockedQueue->pop());
@@ -35,7 +36,8 @@ void LongestRemainingJobFirst::run(){
     if(!waitingQueue->empty()){
         for(int i=0;i<waitingQueue->size();i++){
             process = waitingQueue->pop();
-            if(!process->updateFront(timePerTick)){
+            process->setWaitingTime(process->getWaitingTime()+timePerTick);
+            if(!process->updateFront(1)){
                 process->next();
                 if(process->eof()) deadQueue->push(process);
                 else readyQueue->push(process);
@@ -48,6 +50,10 @@ void LongestRemainingJobFirst::run(){
     if(!this->readyQueue->empty()){
         process = readyQueue->front();
         std::pair<int,int> instr = process->peek();
+        for(auto&c:this->readyQueue->getQueue()){
+            if(c!=process)
+                c->setWaitingTime(c->getWaitingTime()+timePerTick);
+        }
         if(instr.first==0){
             if(instr.second==0){
                 process->next();
@@ -60,7 +66,7 @@ void LongestRemainingJobFirst::run(){
         }
 
         if(instr.first==1){
-            if(!process->updateFront(cyclesPerTick)){
+            if(!process->updateFront(1)){
                 process->next();
                 instr = process->peek();
             }

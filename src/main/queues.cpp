@@ -46,6 +46,12 @@ std::vector<Process*> Queue::getQueue() const{
     return queue;
 }
 
+Queue Queue::cloneQueue(){
+    Queue q;
+    for(auto&c:queue) q.push(c->fork());
+    return q;
+}
+
 void Queue::sort(bool (*cmp)(Process*, Process*)){
     std::sort(queue.begin(), queue.end(), cmp);
 }

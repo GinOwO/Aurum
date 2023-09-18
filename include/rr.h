@@ -13,6 +13,7 @@ public:
 
 private:
     int timeQuantum;
+    int timeQuantumCounter;
 };
 
 #endif 

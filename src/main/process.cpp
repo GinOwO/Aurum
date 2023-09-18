@@ -32,6 +32,10 @@ void Process::push(const std::pair<int,int>& instr){
     this->instructions.push_back({instr.first, q});
 }
 
+std::vector<std::pair<int,int>> Process::viewInstr() const{
+    return this->instructions;
+}
+
 std::pair<int,int> Process::next(){
     if(eof()) throw EndOfFileException();
     return this->instructions[ptr++];
@@ -54,7 +58,9 @@ int Process::updateFront(int t){
 Process* Process::fork(){
     Process* p = new Process(this->name, this->arrivalTime, 
         this->burstTime, this->waitingTime, this->priority);
+    p->ptr = this->ptr;
     p->instructions = this->instructions;
+    p->pid = this->pid;
     return p;
 }
 
@@ -111,24 +117,24 @@ bool Process::processNameCmp(Process* a, Process* b){
     return a->name<b->name;
 }
 
-bool Process::processArrivalCmp(Process* a, Process* b){
-    return a->getArrivalTime()<b->getArrivalTime() ||
-        (a->getArrivalTime()==b->getArrivalTime()&&Process::processNameCmp(a,b));
-}
-
 bool Process::processPriorityCmp(Process* a, Process* b){
     return a->getPriority()<b->getPriority() ||
-        (a->getPriority()==b->getPriority()&&Process::processArrivalCmp(a,b));
+        (a->getPriority()==b->getPriority()&&Process::processNameCmp(a,b));
+}
+
+bool Process::processArrivalCmp(Process* a, Process* b){
+    return a->getArrivalTime()<b->getArrivalTime() ||
+        (a->getArrivalTime()==b->getArrivalTime()&&Process::processPriorityCmp(a,b));
 }
 
 bool Process::processBurstCmp(Process* a, Process* b){
     return a->getBurstTime()<b->getBurstTime() ||
-        (a->getBurstTime()==b->getBurstTime()&&Process::processArrivalCmp(a,b));
+        (a->getBurstTime()==b->getBurstTime()&&Process::processPriorityCmp(a,b));
 }
 
 bool Process::processWaitingCmp(Process* a, Process* b){
     return a->getWaitingTime()<b->getWaitingTime() ||
-        (a->getWaitingTime()==b->getWaitingTime()&&Process::processArrivalCmp(a,b));
+        (a->getWaitingTime()==b->getWaitingTime()&&Process::processPriorityCmp(a,b));
 }
 
 // End of Comparators
