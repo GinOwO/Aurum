@@ -5,6 +5,8 @@
 #include "src/ui/queuewindow.h"
 
 #include <QApplication>
+#include <QMainWindow>
+#include <QWidget>
 
 int main(int argc, char *argv[]){
     QApplication app(argc, argv);

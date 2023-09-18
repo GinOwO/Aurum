@@ -20,7 +20,7 @@ void ProcessTable::insert(int _pid, Process* p){
 
 void ProcessTable::kill(int pid){
     if(!exists(pid)) throw ProcessDoesNotExistException();
-    delete table[pid];
+    Process::kill(table[pid]);
     table.erase(pid);
 }
 
@@ -60,4 +60,10 @@ std::vector<int> ProcessTable::listProcesses(){
     std::vector<int> v;
     for(auto&[a,_]:table) v.push_back(a);
     return v;
+}
+
+ProcessTable ProcessTable::fork(){
+    ProcessTable ptable;
+    for(auto&c:table) ptable.insert(c.first, c.second->fork());
+    return ptable;
 }

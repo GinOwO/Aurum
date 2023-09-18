@@ -14,6 +14,7 @@ struct __State__{
     int ticksElapsed;
     int idleTime;
     int wastedCycles;
+    ProcessTable processTable;
     Queue arrivalQueue;
     Queue readyQueue;
     Queue waitingQueue;
@@ -50,6 +51,7 @@ public:
     void selectAlgorithm(const std::string&);
     bool isCompleted();
     std::string getAlgorithmName() const;
+    std::string logging() const;
 
     void nextTick();
     State getState();

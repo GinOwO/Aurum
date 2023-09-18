@@ -7,7 +7,7 @@
 
 RoundRobin::RoundRobin(
     Queue* aq, Queue* rq, Queue* wq, Queue* bq, Queue* dq, int ttt, int ctt, int tq):
-    BaseAlgorithm(aq, rq, wq, bq, dq, ttt, ctt), timeQuantum(tq) {
+    BaseAlgorithm(aq, rq, wq, bq, dq, ttt, ctt), timeQuantum(tq), timeQuantumCounter(0) {
 }
 
 void RoundRobin::run() {
@@ -20,7 +20,7 @@ void RoundRobin::run() {
     if (!blockedQueue->empty()) {
         process = blockedQueue->front();
         process->setWaitingTime(process->getWaitingTime()+timePerTick);
-        if (!process->updateFront(timePerTick)) {
+        if (!process->updateFront(1)) {
             process->next();
             if (process->eof()) deadQueue->push(blockedQueue->pop());
             else readyQueue->push(blockedQueue->pop());
@@ -32,7 +32,7 @@ void RoundRobin::run() {
         for (int i = 0; i < waitingQueue->size(); i++) {
             process = waitingQueue->pop();
             process->setWaitingTime(process->getWaitingTime()+timePerTick);
-            if (!process->updateFront(timePerTick)) {
+            if (!process->updateFront(1)) {
                 process->next();
                 if (process->eof()) deadQueue->push(process);
                 else readyQueue->push(process);
@@ -46,8 +46,8 @@ void RoundRobin::run() {
         process = readyQueue->front();
         std::pair<int,int> instr = process->peek();
         for(auto&c:this->readyQueue->getQueue()){
-            if(c==process) continue;
-            c->setWaitingTime(c->getWaitingTime()+timePerTick);
+            if(c!=process)
+                c->setWaitingTime(c->getWaitingTime()+timePerTick);
         }
         if (instr.first == 0) {
             if (instr.second == 0) {
@@ -59,14 +59,20 @@ void RoundRobin::run() {
             }
         }
 
-        if (instr.first == 1) {
-            if (!process->updateFront(std::min(cyclesPerTick, timeQuantum))) {
+        if(instr.first == 1){
+            if(timeQuantumCounter==timeQuantum){
+                timeQuantumCounter = 0;
+                readyQueue->push(readyQueue->pop());
+            }
+            timeQuantumCounter++;
+            if (!process->updateFront(1)){
+                timeQuantumCounter = 0;
                 process->next();
                 instr = process->peek();
             }
         }
-        else if (instr.first == 2) blockedQueue->push(readyQueue->pop());
-        else if (instr.first == 3) {
+        else if(instr.first == 2) blockedQueue->push(readyQueue->pop());
+        else if(instr.first == 3){
             waitingQueue->push(readyQueue->pop());
             waitingQueue->sort(Process::processWaitingCmp);
         }

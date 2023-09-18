@@ -2,8 +2,8 @@
 #define _AURUM_SCHEDULING_ALGORITHMS_H 1
 
 #include "basealg.h"
-#include "lrjt.h"
-#include "srjt.h"
+#include "lrjf.h"
+#include "srjf.h"
 #include "rr.h"
 
 #include<set>

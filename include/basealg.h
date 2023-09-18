@@ -34,15 +34,21 @@ public:
 
     void arrivalLoad(){
         Process *process = nullptr;
+        Queue *temp = new Queue();
         if(!this->arrivalQueue->empty()){
-            for(int i=0;i<this->arrivalQueue->size();i++){
+            for(int i=this->arrivalQueue->size();i>0;i--){
                 process = this->arrivalQueue->pop();
-                if(process->getArrivalTime()<=this->ticksElapsed*this->timePerTick){
-                    this->readyQueue->push(process);
-                }
+                if(process->getArrivalTime()<=this->ticksElapsed*this->timePerTick)
+                    temp->push(process);
                 else this->arrivalQueue->push(process);
             }
-            process = nullptr;
+        }
+        temp->sort(Process::processPriorityCmp);
+        if(!temp->empty()){
+            for(int i=temp->size();i>0;i--){
+                process = temp->pop();
+                this->readyQueue->push(process);
+            }
         }
     }
 

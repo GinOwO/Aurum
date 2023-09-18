@@ -4,6 +4,7 @@
 #include "scheduler.h"
 
 #include<vector>
+#include<string>
 
 #include <QMainWindow>
 #include <QString>
@@ -26,7 +27,7 @@ private slots:
 
 private:
     Ui::ProcessWindow *ui;
-    std::vector<int> processList;
+    std::vector<std::string> processList;
     Scheduler* scheduler;
     QString filePath;
 };

@@ -7,7 +7,7 @@
 #include "ptable.h"
 #include "schalg.h"
 
-#include<iostream>
+#include<sstream>
 #include<regex>
 #include<cctype>
 #include<vector>
@@ -106,7 +106,6 @@ void Scheduler::load(const std::string& _path){
     fd.close();
     
     int prev=0, ticks=0;
-    double _time=0;
     for(Program* c:programs){
         Process* P = new Process(c->getName(),c->getStartTime(),0,0,c->getPriority());
         try{
@@ -115,14 +114,7 @@ void Scheduler::load(const std::string& _path){
                 int tt = 1;
                 if(c->peek().first==1) tt = this->cyclesPerTick;
                 else if(c->peek().first>1) tt = this->timeUnitsPerTick;
-                if(c->peek().first==prev){
-                    _time+=ceil(c->peek().second/tt);
-                }
-                else{
-                    prev=c->peek().first;
-                    ticks+=_time;
-                    _time=ceil(c->peek().second/tt);
-                }
+                ticks+=ceil(c->peek().second/tt);
                 P->push(c->peek());
                 c->next();
             }
@@ -151,7 +143,7 @@ void Scheduler::selectAlgorithm(const std::string& name){
             &this->readyQueue, &this->waitingQueue, &this->blockedQueue,
             &this->deadQueue, this->timeUnitsPerTick, this->cyclesPerTick);
     }
-    else if(name=="Shortest Remaining Job First"){
+    else if(name=="Shortest Job First"){
         this->algorithmID = 2;
         this->algorithm = new ShortestRemainingJobFirst(
             &this->arrivalQueue, &this->readyQueue, &this->waitingQueue, &this->blockedQueue,
@@ -209,12 +201,15 @@ void Scheduler::nextTick(){
     if(!this->algorithm) throw FatalException();
     this->algorithm->run();
     if(!readyQueue.empty()){
-        if(ganttChart.size() && ganttChart.rbegin()->second==readyQueue.front()->getPID())
-            ganttChart.rbegin()->first=this->algorithm->getTicksElapsed();
-        else
+        if(!ganttChart.size() || ganttChart.rbegin()->second!=readyQueue.front()->getPID())
             ganttChart.push_back({this->algorithm->getTicksElapsed(),readyQueue.front()->getPID()});
     }
-    else this->idleTime++;
+    else{
+        this->idleTime++;
+        this->wastedCycles+=cyclesPerTick;
+        if(!ganttChart.size() || ganttChart.rbegin()->second!=-1)
+            ganttChart.push_back({this->algorithm->getTicksElapsed(),-1});
+    }
 }
 
 Process* Scheduler::fork(int pid){
@@ -232,4 +227,20 @@ std::string Scheduler::getAlgorithmName() const{
     if(this->algorithmID<1)
         throw UnavailableAlgorithmException("Alg Not Selected");
     return availableAlgorithmsMap.at(this->algorithmID);
+}
+
+std::string Scheduler::logging() const{
+    std::stringstream ss;
+    ss << "Ticks Elapsed:     " << this->algorithm->getTicksElapsed() << "\nArrival Queue:     ";
+    for(auto&c:arrivalQueue.getQueue()) ss << c->getPID() << "  ";
+    ss << "\nReady Queue:      ";
+    for(auto&c:readyQueue.getQueue()) ss << c->getPID() << "  ";
+    ss << "\nWaiting Queue:  ";
+    for(auto&c:waitingQueue.getQueue()) ss << c->getPID() << "  ";
+    ss << "\nBlocked Queue:  ";
+    for(auto&c:blockedQueue.getQueue()) ss << c->getPID() << "  ";
+    ss << "\nDead Queue:       ";
+    for(auto&c:deadQueue.getQueue()) ss << c->getPID() << "  ";
+    ss << "\n\n";
+    return ss.str();
 }

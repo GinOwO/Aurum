@@ -17,6 +17,8 @@ public:
     void clear();
     Process* getProcess(int);
 
+    ProcessTable fork();
+
     std::string viewProcess(int);
     std::vector<int> listProcesses();
 };

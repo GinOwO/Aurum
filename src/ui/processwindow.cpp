@@ -24,10 +24,11 @@ void ProcessWindow::setWindow(QString pt, Scheduler* sh){
 
 void ProcessWindow::init(){
     scheduler->load(filePath.toStdString());
-    this->processList = scheduler->processTable.listProcesses();
-    sort(processList.begin(), processList.end());
+    auto t = scheduler->processTable.listProcesses();
+    sort(t.begin(), t.end());
+    for(auto&c:t) this->processList.push_back(scheduler->processTable.viewProcess(c));
     ui->comboBox->insertItem(0,QString("Select a process"));
-    for(auto&c:processList){
+    for(auto&c:t){
         auto P = scheduler->processTable.getProcess(c);
         std::string s = std::to_string(c) + " : " + P->getName();
         ui->comboBox->insertItem(c,QString::fromStdString(s));
@@ -38,7 +39,7 @@ void ProcessWindow::init(){
 void ProcessWindow::on_process_select(){
     int idx = this->ui->comboBox->currentIndex();
     if(idx>0){
-        auto t = scheduler->processTable.viewProcess(processList[idx-1]);
+        auto t = processList[idx-1];
         ui->textBrowser->setText(QString::fromStdString(t));
     }
     else ui->textBrowser->setText(QString("Select a process"));
