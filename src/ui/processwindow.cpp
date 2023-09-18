@@ -19,6 +19,7 @@ ProcessWindow::~ProcessWindow(){
 void ProcessWindow::setWindow(QString pt, Scheduler* sh){
     this->filePath = pt;
     this->scheduler = sh;
+    this->init();
 }
 
 void ProcessWindow::init(){

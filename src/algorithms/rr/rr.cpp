@@ -19,6 +19,7 @@ void RoundRobin::run() {
 
     if (!blockedQueue->empty()) {
         process = blockedQueue->front();
+        process->setWaitingTime(process->getWaitingTime()+timePerTick);
         if (!process->updateFront(timePerTick)) {
             process->next();
             if (process->eof()) deadQueue->push(blockedQueue->pop());
@@ -30,6 +31,7 @@ void RoundRobin::run() {
     if (!waitingQueue->empty()) {
         for (int i = 0; i < waitingQueue->size(); i++) {
             process = waitingQueue->pop();
+            process->setWaitingTime(process->getWaitingTime()+timePerTick);
             if (!process->updateFront(timePerTick)) {
                 process->next();
                 if (process->eof()) deadQueue->push(process);
@@ -43,6 +45,10 @@ void RoundRobin::run() {
     if (!this->readyQueue->empty()) {
         process = readyQueue->front();
         std::pair<int,int> instr = process->peek();
+        for(auto&c:this->readyQueue->getQueue()){
+            if(c==process) continue;
+            c->setWaitingTime(c->getWaitingTime()+timePerTick);
+        }
         if (instr.first == 0) {
             if (instr.second == 0) {
                 process->next();

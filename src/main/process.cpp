@@ -58,7 +58,9 @@ int Process::updateFront(int t){
 Process* Process::fork(){
     Process* p = new Process(this->name, this->arrivalTime, 
         this->burstTime, this->waitingTime, this->priority);
+    p->ptr = this->ptr;
     p->instructions = this->instructions;
+    p->pid = this->pid;
     return p;
 }
 

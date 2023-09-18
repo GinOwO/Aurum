@@ -10,10 +10,11 @@ int main(int argc, char *argv[]){
     QApplication app(argc, argv);
 
     ProcessWindow processWindow;
+    QueueWindow queueWindow;
     Scheduler scheduler(100,1);
 
     StartWindow startWindow;
-    startWindow.setWindow(&processWindow,&scheduler);
+    startWindow.setWindow(&processWindow,&scheduler,&queueWindow);
     startWindow.show();
 
     return app.exec();

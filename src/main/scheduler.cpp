@@ -61,7 +61,7 @@ Scheduler::Scheduler(const int& _cyclesPerTick, const int& _timeUnitsPerTick){
     this->waitingQueue = Queue();
     this->blockedQueue = Queue();
     this->deadQueue = Queue();
-    this->ganttChart = std::map<int, int>();
+    this->ganttChart = std::vector<std::pair<int, int>>();
 }
 
 void Scheduler::reset(){
@@ -138,12 +138,13 @@ void Scheduler::load(const std::string& _path){
         delete c;
     }
     this->arrivalQueue.sort();
-    return;
 }
 
 void Scheduler::selectAlgorithm(const std::string& name){
     if(!availableAlgorithms.count(name))
         throw UnavailableAlgorithmException(name);
+    if(this->arrivalQueue.empty())
+        throw InvalidInputException();
     if(name=="Longest Remaining Job First"){
         this->algorithmID = 1;
         this->algorithm = new LongestRemainingJobFirst(&this->arrivalQueue,
@@ -178,26 +179,57 @@ void Scheduler::selectAlgorithm(const std::string& name){
     
 }
 
-void Scheduler::simulate(){
+State Scheduler::getState(){
+    State state;
+    state.ticksElapsed = this->algorithm->getTicksElapsed();
+    state.idleTime = this->idleTime;
+    state.wastedCycles = this->wastedCycles;
+    state.arrivalQueue = this->arrivalQueue.cloneQueue();
+    state.readyQueue = this->readyQueue.cloneQueue();
+    state.waitingQueue = this->waitingQueue.cloneQueue();
+    state.deadQueue = this->deadQueue.cloneQueue();
+    state.blockedQueue = this->blockedQueue.cloneQueue();
+    state.ganttChart = std::vector<std::pair<int,int>>(this->ganttChart);
+    return state;
+}
+
+void Scheduler::setState(State state){
+    this->algorithm->setTicksElapsed(state.ticksElapsed);
+    this->idleTime = state.idleTime;
+    this->wastedCycles = state.wastedCycles;
+    this->arrivalQueue = state.arrivalQueue;
+    this->readyQueue = state.readyQueue;
+    this->waitingQueue = state.waitingQueue;
+    this->deadQueue = state.deadQueue;
+    this->blockedQueue = state.blockedQueue;
+    this->ganttChart = state.ganttChart;
+}
+
+void Scheduler::nextTick(){
     if(!this->algorithm) throw FatalException();
-    while(1){
-        try{
-            this->algorithm->run();
-            
-            if(!readyQueue.empty()){
-                if(!ganttChart.size()) ganttChart[this->algorithm->getTicksElapsed()]=readyQueue.front()->getPID();
-                else if(ganttChart.rbegin()->second!=readyQueue.front()->getPID())
-                    ganttChart[this->algorithm->getTicksElapsed()]=readyQueue.front()->getPID();
-            }
-            else this->idleTime++;
-        }
-        catch(ExecutionCompletedException){
-            std::cout << "Execution Completed.\n";
-            break;
-        }
+    this->algorithm->run();
+    if(!readyQueue.empty()){
+        if(ganttChart.size() && ganttChart.rbegin()->second==readyQueue.front()->getPID())
+            ganttChart.rbegin()->first=this->algorithm->getTicksElapsed();
+        else
+            ganttChart.push_back({this->algorithm->getTicksElapsed(),readyQueue.front()->getPID()});
     }
-    for(auto&c:ganttChart) std::cout << c.first << "\t";
-    std::cout << '\n';
-    for(auto&c:ganttChart) std::cout << c.second << "\t";
-    std::cout << '\n';
+    else this->idleTime++;
+}
+
+Process* Scheduler::fork(int pid){
+    auto p = this->processTable.getProcess(pid)->fork();
+    p->setPID(Scheduler::pid);
+    this->processTable.insert(Scheduler::pid++,p);
+    return p;
+}
+
+bool Scheduler::isCompleted(){
+    return this->algorithm != nullptr && this->algorithm->completed();
+}
+
+std::string Scheduler::getAlgorithmName() const{
+    if(this->algorithmID<1)
+        throw UnavailableAlgorithmException("Alg Not Selected");
+    return availableAlgorithmsMap.at(this->algorithmID);
 }

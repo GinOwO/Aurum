@@ -12,13 +12,17 @@ protected:
 public:
     Queue();
     ~Queue();
-    void push(Process*);
+    Queue cloneQueue();
+
     Process* pop();
     Process* front();
+
     int size();
     bool empty();
     void clear();
+    void push(Process*);
     std::vector<Process*> getQueue() const;
+
     void sort(bool (*cmp)(Process*, Process*)=Process::processArrivalCmp);
 };
 

@@ -4,6 +4,7 @@
 #include "startwindow.h"
 #include "ui_startwindow.h"
 #include "processwindow.h"
+#include "queuewindow.h"
 #include <QFileDialog>
 #include <QString>
 
@@ -23,12 +24,16 @@ StartWindow::~StartWindow(){
 
 void StartWindow::on_buttonBox_accepted(){
     QString filePath = ui->textEdit->toPlainText();
-    int stackSize = ui->textEdit_3->toPlainText().toInt();
+    int maxSteps = ui->textEdit_3->toPlainText().toInt();
     QString algo = ui->dropDownBox->currentText();
-    scheduler->selectAlgorithm(algo.toStdString());
+
     processWindow->setWindow(filePath, scheduler);
-    processWindow->init();
+    scheduler->selectAlgorithm(algo.toStdString());
     processWindow->show();
+
+    queueWindow->setWindow(maxSteps, scheduler);
+    queueWindow->show();
+
     accept();
 }
 
@@ -37,7 +42,8 @@ void StartWindow::on_browse_clicked(){
     ui->textEdit->setPlainText(path);
 }
 
-void StartWindow::setWindow(ProcessWindow* mv, Scheduler* sh){
-    this->processWindow = mv;
+void StartWindow::setWindow(ProcessWindow* mw, Scheduler* sh, QueueWindow* qw){
+    this->processWindow = mw;
     this->scheduler = sh;
+    this->queueWindow = qw;
 }

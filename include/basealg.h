@@ -50,6 +50,10 @@ public:
         return this->ticksElapsed;
     }
 
+    void setTicksElapsed(int x){
+        this->ticksElapsed = x;
+    }
+
     bool completed(){
         return this->deadQueue->size()>=this->totalProcesses;
     }

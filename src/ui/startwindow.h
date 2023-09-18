@@ -4,6 +4,7 @@
 #include "scheduler.h"
 
 #include "processwindow.h"
+#include "queuewindow.h"
 
 #include <QDialog>
 #include <QString>
@@ -19,7 +20,7 @@ class StartWindow : public QDialog
 public:
     explicit StartWindow(QWidget *parent = nullptr);
     ~StartWindow();
-    void setWindow(ProcessWindow*, Scheduler*);
+    void setWindow(ProcessWindow*, Scheduler*, QueueWindow*);
 
 private slots:
     void on_buttonBox_accepted();
@@ -29,6 +30,7 @@ private:
     Ui::StartWindow *ui;
     ProcessWindow* processWindow;
     Scheduler* scheduler;
+    QueueWindow* queueWindow;
 };
 
 #endif // STARTWINDOW_H

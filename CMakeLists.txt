@@ -36,9 +36,6 @@ if(Qt${QT_VERSION_MAJOR}_FOUND)
             src/ui/queuewindow.h src/ui/queuewindow.cpp src/ui/queuewindow.ui
 
 
-
-
-
     )
 
     target_link_libraries(Aurum PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
