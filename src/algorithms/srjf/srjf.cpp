@@ -66,7 +66,7 @@ void ShortestRemainingJobFirst::run() {
         }
 
         if (instr.first == 1) {
-            if (!process->updateFront(cyclesPerTick)) {
+            if (!process->updateFront(1)) {
                 process->next();
                 instr = process->peek();
             }

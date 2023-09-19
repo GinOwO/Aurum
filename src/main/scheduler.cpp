@@ -143,7 +143,7 @@ void Scheduler::selectAlgorithm(const std::string& name){
             &this->readyQueue, &this->waitingQueue, &this->blockedQueue,
             &this->deadQueue, this->timeUnitsPerTick, this->cyclesPerTick);
     }
-    else if(name=="Shortest Job First"){
+    else if(name=="Shortest Remaining Job First"){
         this->algorithmID = 2;
         this->algorithm = new ShortestRemainingJobFirst(
             &this->arrivalQueue, &this->readyQueue, &this->waitingQueue, &this->blockedQueue,
