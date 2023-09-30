@@ -3,8 +3,8 @@
 #include "processwindow.h"
 #include "ui_processwindow.h"
 
-#include<string>
-#include<QString>
+#include <string>
+#include <QString>
 
 ProcessWindow::ProcessWindow(QWidget *parent) :
     QMainWindow(parent),

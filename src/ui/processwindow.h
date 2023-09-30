@@ -3,8 +3,8 @@
 
 #include "scheduler.h"
 
-#include<vector>
-#include<string>
+#include <vector>
+#include <string>
 
 #include <QMainWindow>
 #include <QString>

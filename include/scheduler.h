@@ -1,14 +1,14 @@
-#ifndef _AURUM_QUEUE_H
-#define _AURUM_QUEUE_H 1
+#ifndef AURUM_QUEUE_H
+#define AURUM_QUEUE_H
 
 #include "ptable.h"
 #include "queues.h"
 #include "basealg.h"
 
-#include<vector>
-#include<string>
-#include<queue>
-#include<utility>
+#include <vector>
+#include <string>
+#include <queue>
+#include <utility>
 
 struct __State__{
     int ticksElapsed;

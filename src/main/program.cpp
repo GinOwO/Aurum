@@ -1,10 +1,10 @@
 #include "program.h"
 #include "ctexceptions.h"
 
-#include<string>
-#include<vector>
-#include<cstdint>
-#include<utility>
+#include <string>
+#include <vector>
+#include <cstdint>
+#include <utility>
 
 Program::Program(int _startTime,const std::string _name, int _priority){
     this->content = new std::vector<std::pair<int,int>>;

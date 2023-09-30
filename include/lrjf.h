@@ -1,5 +1,5 @@
-#ifndef _AURUM_LONGEST_JOB_FIRST_H
-#define _AURUM_LONGEST_JOB_FIRST_H 1
+#ifndef AURUM_LONGEST_JOB_FIRST_H
+#define AURUM_LONGEST_JOB_FIRST_H
 
 #include "process.h"    // Path: include/process.h
 #include "queues.h"     // Path: include/queues.h

@@ -1,10 +1,10 @@
 #include "process.h"
 #include "ctexceptions.h"
 
-#include<utility>
-#include<string>
-#include<vector>
-#include<cmath>
+#include <utility>
+#include <string>
+#include <vector>
+#include <cmath>
 
 int Process::timeToTick = 0;
 int Process::cyclesToTick = 0;

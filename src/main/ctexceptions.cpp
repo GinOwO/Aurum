@@ -1,8 +1,8 @@
 #include "ctexceptions.h"
 
-#include<exception>
-#include<string>
-#include<cctype>
+#include <exception>
+#include <string>
+#include <cctype>
 
 BaseException::BaseException(const std::string& _err_msg, const int _err_num){
     errorMessage=_err_msg;

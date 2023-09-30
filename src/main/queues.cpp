@@ -2,9 +2,9 @@
 #include "process.h"
 #include "ctexceptions.h"
 
-#include<vector>
-#include<queue>
-#include<algorithm>
+#include <vector>
+#include <queue>
+#include <algorithm>
 
 Queue::Queue(){
     queue = std::vector<Process*>();

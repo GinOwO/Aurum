@@ -1,10 +1,10 @@
-#ifndef _AURUM_BASE_ALGORITHM_H
-#define _AURUM_BASE_ALGORITHM_H 1
+#ifndef AURUM_BASE_ALGORITHM_H
+#define AURUM_BASE_ALGORITHM_H
 
 #include "process.h"    // Path: include/process.h
 #include "queues.h"     // Path: include/queues.h
 
-#include<algorithm>
+#include <algorithm>
 
 class BaseAlgorithm{
 protected:
