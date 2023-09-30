@@ -37,7 +37,6 @@ CMakeF*
 CMakeCache*
 cmake*
 Make*
-.github
 .vscode
 .hidden
 *.code-workspace
