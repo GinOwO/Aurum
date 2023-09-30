@@ -1,10 +1,10 @@
-#ifndef _AURUM_QUEUES_H
-#define _AURUM_QUEUES_H 1
+#ifndef AURUM_QUEUES_H
+#define AURUM_QUEUES_H
 
 #include "process.h"
 
-#include<vector>
-#include<queue>
+#include <vector>
+#include <queue>
 
 class Queue{
 protected:

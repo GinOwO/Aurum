@@ -1,8 +1,8 @@
-#ifndef _AURUM_CUSTOM_EXCEPTIONS_H
-#define _AURUM_CUSTOM_EXCEPTIONS_H 1
+#ifndef AURUM_CUSTOM_EXCEPTIONS_H
+#define AURUM_CUSTOM_EXCEPTIONS_H
 
-#include<exception>
-#include<string>
+#include <exception>
+#include <string>
 
 class BaseException:virtual public std::exception{
 protected:

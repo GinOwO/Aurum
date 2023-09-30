@@ -7,13 +7,13 @@
 #include "ptable.h"
 #include "schalg.h"
 
-#include<sstream>
-#include<regex>
-#include<cctype>
-#include<vector>
-#include<string>
-#include<fstream>
-#include<cmath>
+#include <sstream>
+#include <regex>
+#include <cctype>
+#include <vector>
+#include <string>
+#include <fstream>
+#include <cmath>
 
 std::regex patStart(R"/(^STR_PROCESS\s\"([\w\s]+)\"\s(\d+)\s(\d+)$)/");
 std::regex patEnd(R"/(^END_PROCESS$)/");

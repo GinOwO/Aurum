@@ -1,10 +1,10 @@
-#ifndef _AURUM_PROCESS_TABLE_H
-#define _AURUM_PROCESS_TABLE_H 1
+#ifndef AURUM_PROCESS_TABLE_H
+#define AURUM_PROCESS_TABLE_H
 
 #include "process.h"
 
-#include<unordered_map>
-#include<string>
+#include <unordered_map>
+#include <string>
 
 class ProcessTable{
     std::unordered_map<int, Process*> table;

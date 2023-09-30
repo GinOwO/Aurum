@@ -1,5 +1,5 @@
-#ifndef _AURUM_PROGRAM_H
-#define _AURUM_PROGRAM_H 1
+#ifndef AURUM_PROGRAM_H
+#define AURUM_PROGRAM_H
 
 #include <string>
 #include <vector>

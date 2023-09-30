@@ -1,5 +1,5 @@
-#ifndef _AURUM_ROUND_ROBIN_H
-#define _AURUM_ROUND_ROBIN_H 1
+#ifndef AURUM_ROUND_ROBIN_H
+#define AURUM_ROUND_ROBIN_H
 
 #include "process.h"         // Path: include/process.h
 #include "queues.h"          // Path: include/queues.h

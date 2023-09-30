@@ -1,9 +1,9 @@
-#ifndef _AURUM_PROCESS_H
-#define _AURUM_PROCESS_H 1
+#ifndef AURUM_PROCESS_H
+#define AURUM_PROCESS_H
 
-#include<utility>
-#include<string>
-#include<vector>
+#include <utility>
+#include <string>
+#include <vector>
 
 class Process{
     int ptr;

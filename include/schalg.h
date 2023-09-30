@@ -1,14 +1,14 @@
-#ifndef _AURUM_SCHEDULING_ALGORITHMS_H
-#define _AURUM_SCHEDULING_ALGORITHMS_H 1
+#ifndef AURUM_SCHEDULING_ALGORITHMS_H
+#define AURUM_SCHEDULING_ALGORITHMS_H
 
 #include "basealg.h"
 #include "lrjf.h"
 #include "srjf.h"
 #include "rr.h"
 
-#include<set>
-#include<map>
-#include<string>
+#include <set>
+#include <map>
+#include <string>
 
 const std::map<int,std::string> availableAlgorithmsMap = {
     {1,"Longest Remaining Job First"},

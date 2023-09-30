@@ -3,9 +3,9 @@
 
 #include "scheduler.h"
 
-#include<queue>
-#include<vector>
-#include<utility>
+#include <queue>
+#include <vector>
+#include <utility>
 
 #include <QBoxLayout>
 #include <QMainWindow>
