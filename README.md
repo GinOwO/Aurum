@@ -109,7 +109,7 @@ PRIORITY    Optional, lower is higher priority
 - The visualization is not real time, it is a simulation. This means that the visualization will not be accurate to real life. The visualization is meant to be used as a teaching tool and not as a real world scheduler.
 
 ## Contributing
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on contributing to this project.
+Please read [CONTRIBUTING.md](./.github/CONTRIBUTING.md) for details on contributing to this project.
 
 ## License
 
