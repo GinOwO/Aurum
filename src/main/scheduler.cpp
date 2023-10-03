@@ -15,6 +15,9 @@
 #include <fstream>
 #include <cmath>
 
+#include <QFile>
+#include <QTextStream>
+
 std::regex patStart(R"/(^STR_PROCESS\s\"([\w\s]+)\"\s(\d+)\s(\d+)$)/");
 std::regex patEnd(R"/(^END_PROCESS$)/");
 std::regex validOP(R"/(^(CPU|IO|WAIT)\s(\d+)$)/");
@@ -77,32 +80,38 @@ void Scheduler::load(const std::string& _path){
 
     this->arrivalQueue = Queue();
     std::vector<Program*> programs;
-    std::string s, name="unknown";
+    std::string s, name = "unknown";
     std::smatch match;
-    std::ifstream fd;
-    int started=0, aTime;
-    fd.open(_path);
-    if(fd.fail()) throw FileException("cannot open file.");
+    QFile fd(QString::fromStdString(_path));
+    int started = 0, aTime;
 
-    while(std::getline(fd,s,'\n')){
-        if(!started && std::regex_match(s, match, patStart)){
-            started=1;
+    if (!fd.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        throw FileException("Cannot open file.");
+    }
+
+    QTextStream in(&fd);
+
+    while (!in.atEnd()) {
+        s = in.readLine().toStdString();
+        if (!started && std::regex_match(s, match, patStart)) {
+            started = 1;
             programs.push_back(new Program{
-                std::stoi(match[2]),(name = match[1]),std::stoi(match[3])});
+                                           std::stoi(match[2]), (name = match[1]), std::stoi(match[3]) });
         }
-        else if(started && std::regex_match(s, match, validOP)){
+        else if (started && std::regex_match(s, match, validOP)) {
             int _type;
-            if(match[1]=="CPU") _type=1;
-            else if(match[1]=="IO") _type=2;
-            else if(match[1]=="WAIT") _type=3;
-            programs[programs.size()-1]->load(_type,std::stoi(match[2]));
+            if (match[1] == "CPU") _type = 1;
+            else if (match[1] == "IO") _type = 2;
+            else if (match[1] == "WAIT") _type = 3;
+            programs[programs.size() - 1]->load(_type, std::stoi(match[2]));
         }
-        else if(started && std::regex_match(s, match, patEnd)){
+        else if (started && std::regex_match(s, match, patEnd)) {
             started = 0;
             name = "unknown";
         }
-        else throw FileException("Process"+name);
+        else throw FileException("Process" + name);
     }
+
     fd.close();
     
     int prev=0, ticks=0;

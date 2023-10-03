@@ -22,17 +22,19 @@ if(Qt${QT_VERSION_MAJOR}_FOUND)
             ${HEADER_SRC}
             ${MAIN_SOURCES}
             ${ALGO_SOURCES}
-    )
-
-    qt_add_executable(Aurum
-            MANUAL_FINALIZATION
-            ${PROJECT_SOURCES}
             src/ui/startwindow.h src/ui/startwindow.cpp src/ui/startwindow.ui
             src/ui/processwindow.h src/ui/processwindow.cpp src/ui/processwindow.ui
             src/ui/queuewindow.h src/ui/queuewindow.cpp src/ui/queuewindow.ui
-
-
     )
+
+    qt_add_executable(Aurum
+        MANUAL_FINALIZATION
+        ${PROJECT_SOURCES}
+    )
+
+if(WIN32)
+    set_property(TARGET Aurum PROPERTY WIN32_EXECUTABLE true)
+endif()
 
     target_link_libraries(Aurum PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
