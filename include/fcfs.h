@@ -7,7 +7,7 @@
 
 class FirstComeFirstServe : public BaseAlgorithm{
 public:
-    LongestRemainingJobFirst(Queue*,Queue*,Queue*,Queue*,Queue*,int,int);
+    FirstComeFirstServe(Queue*,Queue*,Queue*,Queue*,Queue*,int,int);
     void run();
     static bool comparator(Process *p1, Process *p2);
 };
