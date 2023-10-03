@@ -151,9 +151,9 @@ void Scheduler::selectAlgorithm(const std::string& name){
     }
     else if(name=="First Come First Serve"){
         this->algorithmID = 3;
-        this->algorithm = new FirstComeFirstServe(
-            &this->arrivalQueue, &this->waitingQueue, &this->blockedQueue,
-            &this->deadQueue, this->timeUnitsPerTick, this->cyclesPerTick);
+        this->algorithm = new FirstComeFirstServe(&this->arrivalQueue,
+          &this->readyQueue, &this->waitingQueue, &this->blockedQueue,
+          &this->deadQueue, this->timeUnitsPerTick, this->cyclesPerTick);
     }
     else if(name=="Round Robin"){
         this->algorithmID = 4;
@@ -163,8 +163,8 @@ void Scheduler::selectAlgorithm(const std::string& name){
     }
     else if(name=="Priority Algorithm"){
         this->algorithmID = 5;
-        this->algorithm = new PriorityAlgorithm(
-            &this->arrivalQueue, &this->waitingQueue, &this->blockedQueue,
+        this->algorithm = new PriorityAlgorithm(&this->arrivalQueue,
+            &this->readyQueue, &this->waitingQueue, &this->blockedQueue,
             &this->deadQueue, this->timeUnitsPerTick, this->cyclesPerTick);
     }
     
