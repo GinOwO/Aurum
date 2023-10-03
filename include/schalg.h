@@ -4,6 +4,8 @@
 #include "basealg.h"
 #include "lrjf.h"
 #include "srjf.h"
+#include "fcfs.h"
+#include "priority.h"
 #include "rr.h"
 
 #include <set>
@@ -13,7 +15,9 @@
 const std::map<int,std::string> availableAlgorithmsMap = {
     {1,"Longest Remaining Job First"},
     {2,"Shortest Remaining Job First"},
+    {3,"First Come First Serve"},
     {4,"Round Robin"},
+    {5,"Priority Algorithm"}
 };
 
 const std::set<std::string> availableAlgorithms = [](){
