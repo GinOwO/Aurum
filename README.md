@@ -38,7 +38,7 @@ To build Aurum, you require the following on your system:
 
 Open a command line in your desired folder, clone the repo with the following command
 ```
-git clone https://github.com/KThankYou/Aurum.git
+git clone https://github.com/GinOwO/Aurum.git
 ```
 
 ## Building
