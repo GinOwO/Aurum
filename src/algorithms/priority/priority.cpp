@@ -12,7 +12,7 @@ PriorityAlgorithm::PriorityAlgorithm(
 }
 
 bool PriorityAlgorithm::comparator(Process *p1, Process *p2){
-    return !Process::processPriorityCmp(p1, p2);
+    return Process::processPriorityCmp(p1, p2);
 }
 
 void PriorityAlgorithm::run(){
