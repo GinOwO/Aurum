@@ -64,6 +64,9 @@ Scheduler::Scheduler(const int& _cyclesPerTick, const int& _timeUnitsPerTick){
     this->waitingQueue = Queue();
     this->blockedQueue = Queue();
     this->deadQueue = Queue();
+    this->Queue1 = Queue();
+    this->Queue2 = Queue();
+    this->Queue3 = Queue();
     this->ganttChart = std::vector<std::pair<int, int>>();
 }
 
@@ -176,7 +179,18 @@ void Scheduler::selectAlgorithm(const std::string& name){
             &this->readyQueue, &this->waitingQueue, &this->blockedQueue,
             &this->deadQueue, this->timeUnitsPerTick, this->cyclesPerTick);
     }
+    else if(name=="Multi Level Feedback Queue"){
+        this->algorithmID = 6;
+        this->algorithm = new MultiLevelFeedbackQueue(&this->arrivalQueue,
+            &this->readyQueue, &this->waitingQueue, &this->blockedQueue,
+            &this->deadQueue, this->timeUnitsPerTick, this->cyclesPerTick,
+            this->Queue1, this->Queue2, this->Queue3);
+    }
     
+}
+
+int Scheduler::getId() const noexcept{
+    return this->algorithmID;
 }
 
 State Scheduler::getState(){
@@ -189,11 +203,14 @@ State Scheduler::getState(){
     state.waitingQueue = this->waitingQueue.cloneQueue();
     state.deadQueue = this->deadQueue.cloneQueue();
     state.blockedQueue = this->blockedQueue.cloneQueue();
+    state.Queue1 = this->Queue1.cloneQueue();
+    state.Queue2 = this->Queue2.cloneQueue();
+    state.Queue3 = this->Queue3.cloneQueue();
     state.ganttChart = std::vector<std::pair<int,int>>(this->ganttChart);
     return state;
 }
 
-void Scheduler::setState(State state){
+void Scheduler::setState(State& state){
     this->algorithm->setTicksElapsed(state.ticksElapsed);
     this->idleTime = state.idleTime;
     this->wastedCycles = state.wastedCycles;
@@ -203,11 +220,19 @@ void Scheduler::setState(State state){
     this->deadQueue = state.deadQueue;
     this->blockedQueue = state.blockedQueue;
     this->ganttChart = state.ganttChart;
+    this->Queue1 = state.Queue1;
+    this->Queue2 = state.Queue2;
+    this->Queue3 = state.Queue3;
 }
 
 void Scheduler::nextTick(){
     if(!this->algorithm) throw FatalException();
     this->algorithm->run();
+    if(this->algorithmID==6){
+        readyQueue.clear();
+        for(auto&q:{Queue1,Queue2,Queue3})
+            for(auto&c:q.getQueue()) readyQueue.push(c);
+    }
     if(!readyQueue.empty()){
         if(!ganttChart.size() || ganttChart.rbegin()->second!=readyQueue.front()->getPID())
             ganttChart.push_back({this->algorithm->getTicksElapsed(),readyQueue.front()->getPID()});
@@ -233,11 +258,11 @@ bool Scheduler::isCompleted(){
 
 std::string Scheduler::getAlgorithmName() const{
     if(this->algorithmID<1)
-        throw UnavailableAlgorithmException("Alg Not Selected");
+        throw UnavailableAlgorithmException("Algorithm Not Selected");
     return availableAlgorithmsMap.at(this->algorithmID);
 }
 
-std::string Scheduler::logging() const{
+std::string Scheduler::logging() const noexcept{
     std::stringstream ss;
     ss << "Ticks Elapsed:     " << this->algorithm->getTicksElapsed() << "\nArrival Queue:     ";
     for(auto&c:arrivalQueue.getQueue()) ss << c->getPID() << "  ";
@@ -249,6 +274,13 @@ std::string Scheduler::logging() const{
     for(auto&c:blockedQueue.getQueue()) ss << c->getPID() << "  ";
     ss << "\nDead Queue:       ";
     for(auto&c:deadQueue.getQueue()) ss << c->getPID() << "  ";
+    if(getId()==6){
+        Queue temp[] = {Queue1, Queue2, Queue3};
+        for(int i=0; i<3; i++){
+            ss << "\nQueue "<< i+1 << " :       ";
+            for(auto&c:temp[i].getQueue()) ss << c->getPID() << "  ";
+        }
+    }
     ss << "\n\n";
     return ss.str();
 }

@@ -7,6 +7,7 @@
 #include "fcfs.h"
 #include "priority.h"
 #include "rr.h"
+#include "mlfq.h"
 
 #include <set>
 #include <map>
@@ -17,7 +18,8 @@ const std::map<int,std::string> availableAlgorithmsMap = {
     {2,"Shortest Remaining Job First"},
     {3,"First Come First Serve"},
     {4,"Round Robin"},
-    {5,"Priority Algorithm"}
+    {5,"Priority Algorithm"},
+    {6,"Multi Level Feedback Queue"}
 };
 
 const std::set<std::string> availableAlgorithms = [](){

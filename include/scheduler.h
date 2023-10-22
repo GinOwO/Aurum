@@ -20,6 +20,9 @@ struct __State__{
     Queue waitingQueue;
     Queue blockedQueue;
     Queue deadQueue;
+    Queue Queue1;
+    Queue Queue2;
+    Queue Queue3;
     std::vector<std::pair<int,int>> ganttChart;
 };
 
@@ -42,20 +45,24 @@ public:
     Queue waitingQueue;
     Queue blockedQueue;
     Queue deadQueue;
+    Queue Queue1;
+    Queue Queue2;
+    Queue Queue3;
+    ProcessTable processTable;
     std::vector<std::pair<int,int>> ganttChart;
 
-    ProcessTable processTable;
+    int getId() const noexcept;
     Scheduler(const int&,const int&);
     void load(const std::string&);
     void reset();
     void selectAlgorithm(const std::string&);
     bool isCompleted();
     std::string getAlgorithmName() const;
-    std::string logging() const;
+    std::string logging() const noexcept;
 
     void nextTick();
     State getState();
-    void setState(State);
+    void setState(State&);
     Process* fork(int);
 };
 

@@ -32,13 +32,16 @@ void QueueWindow::init(){
     CONNECTBUTTON(lastButton,lastTick());
     CONNECTBUTTON(oldestButton,oldestTick());
     CONNECTBUTTON(previousButton,prevTick());
-
     ui->previousButton->setEnabled(false);
     ui->oldestButton->setEnabled(false);
 
     ui->algorithmEdit->setText(QString::fromStdString(scheduler->getAlgorithmName()));
 
     currentState = scheduler->getState();
+
+    if(scheduler->getId()!=6){
+        ui->mlfq->hide();
+    }
 }
 #undef CONNECTBUTTON
 
@@ -144,23 +147,28 @@ void QueueWindow::updateViews(){
 }
 
 void QueueWindow::updateUI(){
-    _updateUI(ui->arrivalQueueEdit,scheduler->arrivalQueue.getQueue());
-    _updateUI(ui->readyQueueEdit,scheduler->readyQueue.getQueue());
-    _updateUI(ui->waitingQueueEdit,scheduler->waitingQueue.getQueue());
-    _updateUI(ui->blockedQueueEdit,scheduler->blockedQueue.getQueue());
-    _updateUI(ui->deadQueueEdit,scheduler->deadQueue.getQueue());
-    _updateUI(ui->ganttChart,scheduler->ganttChart);
+    updateUI(ui->arrivalQueueEdit,scheduler->arrivalQueue.getQueue());
+    updateUI(ui->waitingQueueEdit,scheduler->waitingQueue.getQueue());
+    updateUI(ui->readyQueueEdit,scheduler->readyQueue.getQueue());
+    updateUI(ui->blockedQueueEdit,scheduler->blockedQueue.getQueue());
+    updateUI(ui->deadQueueEdit,scheduler->deadQueue.getQueue());
+    if(scheduler->getId()==6){
+        updateUI(ui->queue1_Edit,scheduler->Queue1.getQueue());
+        updateUI(ui->queue2_Edit,scheduler->Queue2.getQueue());
+        updateUI(ui->queue3_Edit,scheduler->Queue3.getQueue());
+    }
+    updateUI(ui->ganttChart,scheduler->ganttChart);
     ui->textLogEdit->insertPlainText(QString::fromStdString(scheduler->logging()));
 }
 
-void QueueWindow::_updateUI(QTextBrowser* textEdit, std::vector<Process*> v){
+void QueueWindow::updateUI(QTextBrowser* textEdit, std::vector<Process*> v){
     std::string text;
     for(auto&c:v) text+="  "+std::to_string(c->getPID()) + "  |";
     if(text.size()>2) text.erase(text.size()-2);
     textEdit->setText(QString::fromStdString(text));
 }
 
-void QueueWindow::_updateUI(QTextBrowser* textEdit, std::vector<std::pair<int,int>> v){
+void QueueWindow::updateUI(QTextBrowser* textEdit, std::vector<std::pair<int,int>> v){
     std::string text;
     for(auto&c:v) text+="  " + std::to_string(c.second) + " : " + std::to_string(c.first) + "  |";
     if(text.size()>2) text.erase(text.size()-2);

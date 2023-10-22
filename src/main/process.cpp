@@ -19,6 +19,7 @@ Process::Process(std::string _name, int _at, int _bt, int _wt, int _priority){
     this->burstTime=_bt;
     this->waitingTime=_wt;
     this->priority=_priority;
+    this->runningTime=0;
 }
 
 void Process::push(const std::pair<int,int>& instr){
@@ -48,6 +49,7 @@ std::pair<int,int> Process::peek(){
 
 int Process::updateFront(int t){
     if(eof()) throw EndOfFileException();
+    if(this->peek().first==1) this->runningTime+=t;
     this->instructions[ptr].second=std::max(
         this->instructions[ptr].second-t, 0
     );
@@ -82,6 +84,10 @@ int Process::getBurstTime() const{
 
 int Process::getWaitingTime() const{
     return this->waitingTime;
+}
+
+int Process::getRunningTime() const{
+    return this->runningTime;
 }
 
 int Process::getPID() const{
