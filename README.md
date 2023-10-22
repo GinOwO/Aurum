@@ -33,7 +33,7 @@ To build Aurum, you require the following on your system:
 - C++20 or above
 - Qt framework 6.5.0+
 - Qt Creator Community 10.0.0+
-- (Optional: Linux Building only) [CQtDeployer](https://github.com/QuasarApp/CQtDeployer)
+- (Optional: Linux only) AppImage-Builder
 
 ### Cloning 
 
@@ -55,8 +55,8 @@ git clone https://github.com/GinOwO/Aurum.git
 ### Linux
 1. Open Qt Creator and load the project.
 2. Switch to release and then build the project.
-3. Copy the release build from the build folder to your desired folder.
-4. Open a terminal in the folder and copy the necessary files with CQtDeployer using `cqtdeployer -bin Aurum -qmake /path/to/Qt/6.5.*/gcc_64/bin/qmake`
+3. Copy the release build from the build folder to your desired folder. Make the directory AppDir/usr/bin and copy the release build to it.
+4. Open a terminal in the folder and run `appimage-builder --generate && appimage-builder` to generate the AppImage.
 
 ## Usage
 1. Launch Aurum.
