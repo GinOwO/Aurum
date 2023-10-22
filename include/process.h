@@ -12,6 +12,7 @@ class Process{
     int arrivalTime;
     int burstTime;
     int waitingTime;
+    int runningTime;
     std::string name;
     std::vector<std::pair<int,int>> instructions;
 public:
@@ -39,6 +40,7 @@ public:
     int getBurstTime() const;
     int getWaitingTime() const;
     int getPID() const;
+    int getRunningTime() const;
     std::string getName() const;
 
     void setPriority(int);

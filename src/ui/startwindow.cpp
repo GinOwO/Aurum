@@ -38,7 +38,8 @@ void StartWindow::on_buttonBox_accepted(){
 }
 
 void StartWindow::on_browse_clicked(){
-    QString path = QFileDialog::getOpenFileName(this, "Select a File", QDir::homePath(), "All Files (*.*)");
+    QString path = QFileDialog::getOpenFileName(this, "Select a File", QDir::homePath(),
+        "Text Files (*.txt);;All Files (*.*)");
     ui->textEdit->setPlainText(path);
 }
 

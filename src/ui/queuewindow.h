@@ -33,8 +33,8 @@ private slots:
     void updateUI();
 
 private:
-    static void _updateUI(QTextBrowser* textEdit,std::vector<Process*>);
-    static void _updateUI(QTextBrowser* textEdit,std::vector<std::pair<int,int>>);
+    static void updateUI(QTextBrowser* textEdit,std::vector<Process*>);
+    static void updateUI(QTextBrowser* textEdit,std::vector<std::pair<int,int>>);
 
     Ui::QueueWindow *ui;
     size_t maxSteps;
