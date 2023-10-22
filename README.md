@@ -18,7 +18,7 @@ To use the pre-built binaries follow the steps below
 
 ### Linux
 
-Download `Aurum_Linux_x86_64.tar.gz` from releases and extract the contents to a folder. Then run `/DistributionKit/Aurum.sh`
+Download `Aurum_Linux_x86_64.tar.gz` from releases and extract the contents to a folder. Then run `Aurum-*.AppImage`
 
 ### Windows
 
