@@ -4,8 +4,8 @@
 ## Description
 Aurum is a GUI application built with the Qt framework. It is a visualizer for various scheduling algorithms used in operating systems. It is built with the intention of being used as a teaching tool. The application provides a visual representation of the algorithms. The algorithms supported are:
 1. First Come First Serve (FCFS)
-2. Shortest Remaining Time First (SRTF)
-3. Longest Remaining Time First (LRTF)
+2. Shortest Remaining Task First (SRTF)
+3. Longest Remaining Task First (LRTF)
 4. Round Robin (RR)
 5. Priority Scheduling (PS)
 6. MultiLevel Feedback Queue (MLFQ)
